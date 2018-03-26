@@ -117,12 +117,25 @@
     <Content Include="libs\layout\layout.less" />
     <Content Include="libs\layout\README.md" />
     <Content Include="libs\layout\_layout.scss" />
+    <Content Include="WebComponents\Crontab\crontab.css">
+      <DependentUpon>crontab.scss</DependentUpon>
+    </Content>
+    <Content Include="WebComponents\Crontab\crontab.html" />
+    <Content Include="WebComponents\Crontab\crontab.js">
+      <DependentUpon>crontab.ts</DependentUpon>
+    </Content>
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="packages.config" />
+    <Content Include="tsconfig.json" />
     <None Include="Web.vidyano">
       <SubType>Designer</SubType>
       <Generator>VidyanoGenerator</Generator>
     </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="WebComponents\Crontab\crontab.scss" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -130,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\vidyano\vidyano.d.ts" />
+    <TypeScriptCompile Include="WebComponents\Crontab\crontab.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,8 +7,13 @@
     <script src="web2/Libs/webcomponentsjs/webcomponents-lite.js"></script>
     <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel="stylesheet" type="text/css">
     <link rel="import" href="web2/vidyano.html" />
+    <link rel="import" href="web2/vulcanize/WebComponents/Crontab/crontab.html" />
 </head>
 <body class="fullbleed">
-    <vi-app label="VidyanoCrontab" class="fit"></vi-app>
+    <vi-app label="VidyanoCrontab" class="fit">
+        <template is="dom-template">
+            <vc-crontab></vc-crontab>
+        </template>
+    </vi-app>
 </body>
 </html>
