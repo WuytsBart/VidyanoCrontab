@@ -1,0 +1,48 @@
+[
+  {
+    "Id": "559dd05a-4e9c-474a-9429-0f4cb18a2a75",
+    "Name": "Admin",
+    "PasswordHash": "$2a$13$hNyx194BGj.sXiBzLgvbXOepssjheQbZqJHmjNCmataaQKlnwfB4e",
+    "MemberOf": [
+      "Administrators"
+    ],
+    "CreationDate": "2018-03-26T14:58:21.6132072+02:00",
+    "SettingsObject": {},
+    "ProfileObject": {},
+    "HasPassword": true
+  },
+  {
+    "$type": "Vidyano.Service.Repository.Group, Vidyano.Service",
+    "Id": "fe9429ba-d5cd-4e7c-bbe4-05a4c3497d97",
+    "IsSystem": true,
+    "Name": "Administrators",
+    "MemberOf": [
+      "Users"
+    ],
+    "CreationDate": "2018-03-26T14:58:21.6132072+02:00",
+    "HasPassword": false
+  },
+  {
+    "Id": "7bf97ad3-f7fa-44ab-aeef-9440734a9dd0",
+    "Name": "User",
+    "PasswordHash": "$2a$13$HHIUuPRuHdozRFPp4Go6aeUsMLK4ANbwEqWoQdD0rGJ7E/daa9Uei",
+    "MemberOf": [
+      "Users"
+    ],
+    "CreationDate": "2018-03-26T14:58:21.6132072+02:00",
+    "SettingsObject": {},
+    "ProfileObject": {
+      "Disabled": true
+    },
+    "HasPassword": true
+  },
+  {
+    "$type": "Vidyano.Service.Repository.Group, Vidyano.Service",
+    "Id": "d3bd3312-0730-43d9-9bf4-9e14c75b00f7",
+    "IsSystem": true,
+    "Name": "Users",
+    "MemberOf": [],
+    "CreationDate": "2018-03-26T14:58:21.6132072+02:00",
+    "HasPassword": false
+  }
+]
