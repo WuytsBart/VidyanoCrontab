@@ -1,6 +1,48 @@
 ﻿<dom-module id="vc-crontab">
     <template>
         <link rel="stylesheet" href="crontab.css" />
-     </template>
+        <div>[[cron]]</div>
+        <button on-tap="_setDagelijks">Dagelijks</button>
+        <button on-tap="_setWekelijks">Wekelijks</button>
+        <button on-tap="_setMaandelijks">Maandelijks</button>
+        <button on-tap="_setJaarlijks">Jaarlijks</button>
+        <template is="dom-if" if="[[cronData.isDagelijks]]">
+            <div class="layout center">
+                <h2>Beginuur</h2>
+                <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
+                <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+            </div>
+        </template>
+        <template is="dom-if" if="[[cronData.isWekelijks]]">
+            <div>
+                <h2>Beginuur</h2>
+                <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
+                <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+                <vi-select options="[[weekArray]]" selected-option="{{cronData.dayOfWeek}}">Weekdag</vi-select>
+            </div>
+        </template>
+        <template is="dom-if" if="[[cronData.isMaandelijks]]">
+            <div>
+                <h2>Beginuur</h2>
+                <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
+                <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+                <input type="number" name="name" value="{{cronData.dayOfMonth::input}}" min="1" max="31" />
+            </div>
+        </template>
+        <template is="dom-if" if="[[cronData.isJaarlijks]]">
+            <div>
+                <div>
+                    <h2>Beginuur</h2>
+                    <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
+                    <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+                </div>
+                <input type="number" name="name" value="{{cronData.dayOfMonth::input}}" min="1" max="31" />
+                <input type="number" name="name" value="{{cronData.month::input}}" min="1" max="12" />
+            </div>
+        </template>
+
+
+    </template>
 </dom-module>
 <script src="crontab.js"></script>
+
