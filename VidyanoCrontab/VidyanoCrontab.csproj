@@ -135,6 +135,9 @@
       <Generator>VidyanoGenerator</Generator>
     </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="WebComponents\Crontab\crontab.min.css">
+      <DependentUpon>crontab.css</DependentUpon>
+    </Content>
     <Content Include="WebComponents\Crontab\crontab.scss" />
   </ItemGroup>
   <ItemGroup>

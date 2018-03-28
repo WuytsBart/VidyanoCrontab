@@ -2,6 +2,8 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "layout": "2sky/layout#master"
+    "layout": "2sky/layout#master",
+    "paper-radio-button": "v2.1.0",
+    "paper-radio-group": "v2.2.0"
   }
 }

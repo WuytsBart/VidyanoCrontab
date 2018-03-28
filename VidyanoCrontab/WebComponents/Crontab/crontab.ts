@@ -3,7 +3,7 @@ namespace VidyanoCrontab.WebComponents {
         properties: {
 
             cron: {
-                type: String
+                type: Array
             },
             weekArray: {
                 type: Array,
@@ -17,15 +17,11 @@ namespace VidyanoCrontab.WebComponents {
                 type: Array,
                 readOnly: true
             },
-            cronDaily: {
-                type: Array
-
-            },
             test: String
         },
 
         observers: [
-            "_computeCron(cronData.minute, cronData.hour, cronData.dayOfMonth, cronData.month, cronData.dayOfWeek, cronData.year)"
+            
         ]
 
     }, "vc")
@@ -33,12 +29,13 @@ namespace VidyanoCrontab.WebComponents {
         readonly weekArray: String[]; private _setWeekArray: (value: string[]) => void;
         readonly monthArray: String[]; private _setMonthArray: (value: string[]) => void;
         readonly cronData: ICronData; private _setCronData: (value: ICronData) => void;
-        cronDaily: String[]; private _setCronDailyArray: (value: string) => void;
+        cron: String[]; private _setCronArray: (value: string) => void;
 
 
-        cron: String;
+
         dayOfWeek: String;
         test: String;
+        
 
         async attached() {
             super.attached();
@@ -58,69 +55,18 @@ namespace VidyanoCrontab.WebComponents {
                 year: "*",
                 startDate: "",
                 endDate: "",
-                cronDaily: ""
+                cronDaily: "",
+                eindDatumCheck: false,
+                aantalLoopsCheck: false,
+                weekDaysCheck: false,
+                loopDaysCheck: false
+                
             })
         }
 
         private _testFunction(): void {
-            console.log(this.test);
-        }
-
-        private _computeCron(minute: String, hour: String, dayOfMonth: String, month: String, dayOfWeek: String, year: String): void {
-
-            this.cron = `${minute} ${hour} ${dayOfMonth} ${this._getMonth(month)} ${this._getDayOfWeek(dayOfWeek)} ${year}`
-        }
-
-        private _getDayOfWeek(dayOfWeek: String): String {
-            switch (dayOfWeek) {
-                case "Maandag":
-                    return "1";
-                case "Dinsdag":
-                    return "2";
-                case "Woensdag":
-                    return "3";
-                case "Donderdag":
-                    return "4";
-                case "Vrijdag":
-                    return "5";
-                case "Zaterdag":
-                    return "6";
-                case "Zondag":
-                    return "7";
-                default:
-                    return "*";
-            }
-        }
-
-        private _getMonth(month: String): String {
-            switch (month) {
-                case "Januari":
-                    return "1";
-                case "Februari":
-                    return "2";
-                case "Maart":
-                    return "3";
-                case "April":
-                    return "4";
-                case "Mei":
-                    return "5";
-                case "Juni":
-                    return "6";
-                case "Juli":
-                    return "7";
-                case "Augustus":
-                    return "8";
-                case "September":
-                    return "9";
-                case "Oktober":
-                    return "10";
-                case "November":
-                    return "11";
-                case "December":
-                    return "12";
-                default:
-                    return "*";
-            }
+            this._setCron();
+            
         }
 
         private _setDagelijks() {
@@ -148,8 +94,9 @@ namespace VidyanoCrontab.WebComponents {
             this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
         }
 
-        private _setCronDaily(): void {
-            this.cronDaily = [];
+        private _setCron(): void {
+            this._checkWeekDays();
+            this.cron = [];
             var splitBegin = this.cronData.startDate.split("-");
             var beginYear = parseInt(splitBegin[0]);
             var beginMonth = parseInt(splitBegin[1]);
@@ -159,65 +106,62 @@ namespace VidyanoCrontab.WebComponents {
             var endYear = parseInt(splitEnd[0]);
             var endMonth = parseInt(splitEnd[1]);
             var endDay = parseInt(splitEnd[2]);
-
-            if (beginYear == endYear) {
-                this.cronData.year = beginYear.toString();
-                if (beginMonth == endMonth) {
-                    if (beginDay <= endDay) {
-                        var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + endDay.toString() + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                        this.cronDaily.push(temp);
+            if (this.cronData.eindDatumCheck) {
+                if (beginYear == endYear) {
+                    this.cronData.year = beginYear.toString();
+                    if (beginMonth == endMonth) {
+                        if (beginDay <= endDay) {
+                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + endDay.toString() + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                            this.cron.push(temp);
+                        }
+                    }
+                    else if (beginMonth < endMonth) {
+                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + this._checkmonth(beginMonth) + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                            this.cron.push(temp);
+                            for (var i = (beginMonth + 1); i < endMonth; i++) {
+                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                                this.cron.push(temp);
+                            }
+                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                            this.cron.push(temp);                      
                     }
                 }
-
-                else if (beginMonth < endMonth) {
-
-                    if (this._checkmonth(beginMonth) == 1) {
-                        var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-31 " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                        this.cronDaily.push(temp);
-                        for (var i = (beginMonth + 1); i < endMonth; i++) {
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                        }
-                        temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                        this.cronDaily.push(temp);
-                        console.log(this.cronDaily);
+                else if (beginYear < endYear) {
+                    var interYears = ((endYear) - beginYear);
+                    var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + this._checkmonth(beginMonth) + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + beginYear;
+                    this.cron.push(temp);
+                    for (var i = (beginMonth + 1); i <= 12; i++) {
+                        temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + beginYear;
+                        this.cron.push(temp);
                     }
-                    else if (this._checkmonth(beginMonth) == 3) {
-                        var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-30 " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                        this.cronDaily.push(temp);
-                        for (var i = (beginMonth + 1); i < endMonth; i++) {
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
+                    for (var i = 1; i < interYears; i++) {
+                        for (var x = 1; x <= 12; x++) {
+                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + x + " " + this.cronData.dayOfWeek + " " + (beginYear + i);
+                            this.cron.push(temp);
                         }
-                        temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                        this.cronDaily.push(temp);
-                        console.log(this.cronDaily);
                     }
-                    else if (this._checkmonth(beginMonth) == 2) {
-                        var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-28 " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                        this.cronDaily.push(temp);
-                        for (var i = (beginMonth + 1); i < endMonth; i++) {
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                        }
-                        temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                        this.cronDaily.push(temp);
-                        console.log(this.cronDaily);
+                    for (var i = 1; i < endMonth; i++) {
+                        temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + endYear;
+                        this.cron.push(temp);
                     }
-
+                    temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + endYear;
+                    this.cron.push(temp);
                 }
             }
-            else if (beginYear < endYear) {
 
-            }
-
-
-
+            console.log(this.cron);
         }
 
-
+        private _checkWeekDays() {
+            if (this.cronData.weekDaysCheck) {
+                this.cronData.dayOfWeek = "1-5";
+            }
+            else this.cronData.dayOfWeek = "*";
+            
+        }
 
         private _checkmonth(month: Number): Number {
+            //if ()
             switch (month) {
                 case 1:
                 case 3:
@@ -226,17 +170,18 @@ namespace VidyanoCrontab.WebComponents {
                 case 8:
                 case 10:
                 case 12:
-                    return 1;
+                    return 31;
                 case 2:
-                    return 2;
+                    return 28;
                 case 4:
                 case 6:
                 case 9:
                 case 11:
-                    return 3;
+                    return 30;
             }
         }
     }
+
     export interface ICronData {
         isDagelijks: boolean;
         isWekelijks: boolean;
@@ -249,6 +194,10 @@ namespace VidyanoCrontab.WebComponents {
         year: string,
         startDate: string,
         endDate: string,
-        cronDaily: string
+        cronDaily: string,
+        eindDatumCheck: Boolean,
+        aantalLoopsCheck: Boolean,
+        loopDaysCheck: Boolean,
+        weekDaysCheck: Boolean
     }
 }

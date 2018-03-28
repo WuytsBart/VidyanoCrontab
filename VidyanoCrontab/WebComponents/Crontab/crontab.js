@@ -31,7 +31,11 @@ var VidyanoCrontab;
                                     year: "*",
                                     startDate: "",
                                     endDate: "",
-                                    cronDaily: ""
+                                    cronDaily: "",
+                                    eindDatumCheck: false,
+                                    aantalLoopsCheck: false,
+                                    weekDaysCheck: false,
+                                    loopDaysCheck: false
                                 });
                                 return [2 /*return*/];
                         }
@@ -39,60 +43,7 @@ var VidyanoCrontab;
                 });
             };
             Crontab.prototype._testFunction = function () {
-                console.log(this.test);
-            };
-            Crontab.prototype._computeCron = function (minute, hour, dayOfMonth, month, dayOfWeek, year) {
-                this.cron = minute + " " + hour + " " + dayOfMonth + " " + this._getMonth(month) + " " + this._getDayOfWeek(dayOfWeek) + " " + year;
-            };
-            Crontab.prototype._getDayOfWeek = function (dayOfWeek) {
-                switch (dayOfWeek) {
-                    case "Maandag":
-                        return "1";
-                    case "Dinsdag":
-                        return "2";
-                    case "Woensdag":
-                        return "3";
-                    case "Donderdag":
-                        return "4";
-                    case "Vrijdag":
-                        return "5";
-                    case "Zaterdag":
-                        return "6";
-                    case "Zondag":
-                        return "7";
-                    default:
-                        return "*";
-                }
-            };
-            Crontab.prototype._getMonth = function (month) {
-                switch (month) {
-                    case "Januari":
-                        return "1";
-                    case "Februari":
-                        return "2";
-                    case "Maart":
-                        return "3";
-                    case "April":
-                        return "4";
-                    case "Mei":
-                        return "5";
-                    case "Juni":
-                        return "6";
-                    case "Juli":
-                        return "7";
-                    case "Augustus":
-                        return "8";
-                    case "September":
-                        return "9";
-                    case "Oktober":
-                        return "10";
-                    case "November":
-                        return "11";
-                    case "December":
-                        return "12";
-                    default:
-                        return "*";
-                }
+                this._setCron();
             };
             Crontab.prototype._setDagelijks = function () {
                 this.cronData.isDagelijks = true;
@@ -118,8 +69,9 @@ var VidyanoCrontab;
                 this.notifyPath("cronData.isWekelijks", this.cronData.isWekelijks);
                 this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
             };
-            Crontab.prototype._setCronDaily = function () {
-                this.cronDaily = [];
+            Crontab.prototype._setCron = function () {
+                this._checkWeekDays();
+                this.cron = [];
                 var splitBegin = this.cronData.startDate.split("-");
                 var beginYear = parseInt(splitBegin[0]);
                 var beginMonth = parseInt(splitBegin[1]);
@@ -128,54 +80,59 @@ var VidyanoCrontab;
                 var endYear = parseInt(splitEnd[0]);
                 var endMonth = parseInt(splitEnd[1]);
                 var endDay = parseInt(splitEnd[2]);
-                if (beginYear == endYear) {
-                    this.cronData.year = beginYear.toString();
-                    if (beginMonth == endMonth) {
-                        if (beginDay <= endDay) {
-                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + endDay.toString() + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
+                if (this.cronData.eindDatumCheck) {
+                    if (beginYear == endYear) {
+                        this.cronData.year = beginYear.toString();
+                        if (beginMonth == endMonth) {
+                            if (beginDay <= endDay) {
+                                var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + endDay.toString() + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                                this.cron.push(temp);
+                            }
+                        }
+                        else if (beginMonth < endMonth) {
+                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + this._checkmonth(beginMonth) + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                            this.cron.push(temp);
+                            for (var i = (beginMonth + 1); i < endMonth; i++) {
+                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                                this.cron.push(temp);
+                            }
+                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
+                            this.cron.push(temp);
                         }
                     }
-                    else if (beginMonth < endMonth) {
-                        if (this._checkmonth(beginMonth) == 1) {
-                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-31 " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                            for (var i = (beginMonth + 1); i < endMonth; i++) {
-                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                                this.cronDaily.push(temp);
-                            }
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                            console.log(this.cronDaily);
+                    else if (beginYear < endYear) {
+                        var interYears = ((endYear) - beginYear);
+                        var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + this._checkmonth(beginMonth) + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + beginYear;
+                        this.cron.push(temp);
+                        for (var i = (beginMonth + 1); i <= 12; i++) {
+                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + beginYear;
+                            this.cron.push(temp);
                         }
-                        else if (this._checkmonth(beginMonth) == 3) {
-                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-30 " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                            for (var i = (beginMonth + 1); i < endMonth; i++) {
-                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                                this.cronDaily.push(temp);
+                        for (var i = 1; i < interYears; i++) {
+                            for (var x = 1; x <= 12; x++) {
+                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + x + " " + this.cronData.dayOfWeek + " " + (beginYear + i);
+                                this.cron.push(temp);
                             }
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                            console.log(this.cronDaily);
                         }
-                        else if (this._checkmonth(beginMonth) == 2) {
-                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-28 " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                            for (var i = (beginMonth + 1); i < endMonth; i++) {
-                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                                this.cronDaily.push(temp);
-                            }
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cronDaily.push(temp);
-                            console.log(this.cronDaily);
+                        for (var i = 1; i < endMonth; i++) {
+                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + endYear;
+                            this.cron.push(temp);
                         }
+                        temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + endYear;
+                        this.cron.push(temp);
                     }
                 }
-                else if (beginYear < endYear) {
+                console.log(this.cron);
+            };
+            Crontab.prototype._checkWeekDays = function () {
+                if (this.cronData.weekDaysCheck) {
+                    this.cronData.dayOfWeek = "1-5";
                 }
+                else
+                    this.cronData.dayOfWeek = "*";
             };
             Crontab.prototype._checkmonth = function (month) {
+                //if ()
                 switch (month) {
                     case 1:
                     case 3:
@@ -184,21 +141,21 @@ var VidyanoCrontab;
                     case 8:
                     case 10:
                     case 12:
-                        return 1;
+                        return 31;
                     case 2:
-                        return 2;
+                        return 28;
                     case 4:
                     case 6:
                     case 9:
                     case 11:
-                        return 3;
+                        return 30;
                 }
             };
             Crontab = __decorate([
                 Vidyano.WebComponents.WebComponent.register({
                     properties: {
                         cron: {
-                            type: String
+                            type: Array
                         },
                         weekArray: {
                             type: Array,
@@ -212,14 +169,9 @@ var VidyanoCrontab;
                             type: Array,
                             readOnly: true
                         },
-                        cronDaily: {
-                            type: Array
-                        },
                         test: String
                     },
-                    observers: [
-                        "_computeCron(cronData.minute, cronData.hour, cronData.dayOfMonth, cronData.month, cronData.dayOfWeek, cronData.year)"
-                    ]
+                    observers: []
                 }, "vc")
             ], Crontab);
             return Crontab;
