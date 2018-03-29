@@ -11,21 +11,28 @@
         color: #f1f1f1;
         padding: 5px 0px;
         margin-right: 2%;
+        margin-top: 2%;
     }
 
     .test {
-        border: 1px solid #ff0000
+        border: 1px solid #ff0000;
+    }
+
+    .widthFix {
+        width: 550px;
     }
 
     paper-radio-button {
         padding: 0;
-        
     }
+
     .bumpRight {
-        padding-left:3%;
+        padding-left: 3%;
     }
+
     .bumpRightExtra {
-        padding-left: 5.5%;
+        margin-left: 11%;
+        width: 150%;
     }
 
     .patternCheck {
@@ -39,17 +46,21 @@
         margin-right: 2%;
         padding: 2%;
     }
+
     p {
+        margin-left: 2%;
+        padding-left: 2%;
+        font-size: 14px;
+    }
+
+    .checkBoxes {
+        width: 75%;
         margin-left: 2%;
         padding-left: 2%;
     }
 
-    .checkBoxes {
-        width: 66%;
-        margin-left: 2%;
-        padding-left: 2%;
-    }
     .checkBoxes paper-checkbox {
         padding-top: 1%;
+        width: 100px;
     }
 }

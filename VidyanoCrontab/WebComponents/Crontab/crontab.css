@@ -8,10 +8,14 @@
   background-color: #4682B4;
   color: #f1f1f1;
   padding: 5px 0px;
-  margin-right: 2%; }
+  margin-right: 2%;
+  margin-top: 2%; }
 
 :host .test {
   border: 1px solid #ff0000; }
+
+:host .widthFix {
+  width: 550px; }
 
 :host paper-radio-button {
   padding: 0; }
@@ -20,7 +24,8 @@
   padding-left: 3%; }
 
 :host .bumpRightExtra {
-  padding-left: 5.5%; }
+  margin-left: 11%;
+  width: 150%; }
 
 :host .patternCheck {
   width: 30%; }
@@ -34,13 +39,15 @@
 
 :host p {
   margin-left: 2%;
-  padding-left: 2%; }
+  padding-left: 2%;
+  font-size: 14px; }
 
 :host .checkBoxes {
-  width: 66%;
+  width: 75%;
   margin-left: 2%;
   padding-left: 2%; }
 
 :host .checkBoxes paper-checkbox {
-  padding-top: 1%; }
+  padding-top: 1%;
+  width: 100px; }
 
