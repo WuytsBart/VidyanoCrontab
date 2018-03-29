@@ -3,6 +3,8 @@
         <link rel="stylesheet" href="crontab.css" />
         <link href="../../libs/paper-radio-button/paper-radio-button.html" rel="import" />
         <link href="../../libs/paper-radio-group/paper-radio-group.html" rel="import" />
+        <link href="../../libs/paper-checkbox/paper-checkbox.html" rel="import" />
+        <div>[[cron]]</div>
         <div>[[cronData.startDate]]</div>
         <div>[[cronData.endDate]]</div>
         <button on-tap="_setDagelijks">Dagelijks</button>
@@ -15,13 +17,9 @@
             <div class="layout center">
                 <h2>Beginuur</h2>
                 <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
-                <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+                <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />         
                 <paper-radio-group>
-                    <paper-radio-button name="eindDatumCheck" checked="{{cronData.eindDatumCheck}}">eindigt op</paper-radio-button>
-                    <paper-radio-button name="aantalLoopsCheck" checked="{{cronData.aantalLoopsCheck}}">aantal keer</paper-radio-button>
-                </paper-radio-group><br />
-                <paper-radio-group>
-                    <paper-radio-button name="loopdaysCheck" checked="{{cronData.loopDaysCheck}}">elke x dagen</paper-radio-button>
+                    <paper-radio-button name="loopdaysCheck" checked="{{cronData.leapDaysCheck}}">elke <input type="number" name="LeapDays" value="{{cronData.leapDays::input}}" min="1" max="31" /> dagen</paper-radio-button>
                     <paper-radio-button name="weekDayCheck" checked="{{cronData.weekDaysCheck}}">enkel weekdagen</paper-radio-button>
                 </paper-radio-group>
             </div>
@@ -32,7 +30,13 @@
                 <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
                 <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
                 <h2>Op welke dag?</h2>
-                <vi-select options="[[weekArray]]" selected-option="{{cronData.dayOfWeek}}"></vi-select>
+                <paper-checkbox name="Monday" checked="{{cronData.mondayCheck}}">Maandag</paper-checkbox>
+                <paper-checkbox name="Tuesday" checked="{{cronData.tuesdayCheck}}">Dinsdag</paper-checkbox>
+                <paper-checkbox name="Wednessday" checked="{{cronData.wednessdayCheck}}">Woensdag</paper-checkbox>
+                <paper-checkbox name="Thursday" checked="{{cronData.thursdayCheck}}">Donderdag</paper-checkbox>
+                <paper-checkbox name="Friday" checked="{{cronData.fridayCheck}}">Vrijdag</paper-checkbox>
+                <paper-checkbox name="Saturday" checked="{{cronData.saturdayCheck}}">Zaterdag</paper-checkbox>
+                <paper-checkbox name="Sunday" checked="{{cronData.sundayCheck}}">Zondag</paper-checkbox>
             </div>
         </template>
         <template is="dom-if" if="[[cronData.isMaandelijks]]">

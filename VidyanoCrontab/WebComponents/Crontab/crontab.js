@@ -8,6 +8,10 @@ var VidyanoCrontab;
             function Crontab() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
+            Crontab.prototype._createCron = function (minute, hour, dayOfMonth, month) {
+                this._intervalCheck();
+                this.cron = minute + " " + hour + " " + dayOfMonth + this._intervalCheck() + " " + month + " " + this._checkWeekDays();
+            };
             Crontab.prototype.attached = function () {
                 return __awaiter(this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
@@ -18,7 +22,6 @@ var VidyanoCrontab;
                             case 1:
                                 _a.sent();
                                 this._setMonthArray(["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"]);
-                                this._setWeekArray(["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"]);
                                 this._setCronData({
                                     isDagelijks: true,
                                     isWekelijks: false,
@@ -27,15 +30,19 @@ var VidyanoCrontab;
                                     hour: "*",
                                     dayOfMonth: "*",
                                     month: "*",
-                                    dayOfWeek: "*",
+                                    dayOfWeek: "",
                                     year: "*",
                                     startDate: "",
-                                    endDate: "",
-                                    cronDaily: "",
-                                    eindDatumCheck: false,
-                                    aantalLoopsCheck: false,
                                     weekDaysCheck: false,
-                                    loopDaysCheck: false
+                                    leapDaysCheck: false,
+                                    leapDays: "1",
+                                    mondayCheck: false,
+                                    tuesdayCheck: false,
+                                    wednessdayCheck: false,
+                                    thursdayCheck: false,
+                                    fridayCheck: false,
+                                    saturdayCheck: false,
+                                    sundayCheck: false
                                 });
                                 return [2 /*return*/];
                         }
@@ -43,7 +50,8 @@ var VidyanoCrontab;
                 });
             };
             Crontab.prototype._testFunction = function () {
-                this._setCron();
+                this._createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month);
+                console.log(this.cron);
             };
             Crontab.prototype._setDagelijks = function () {
                 this.cronData.isDagelijks = true;
@@ -69,70 +77,34 @@ var VidyanoCrontab;
                 this.notifyPath("cronData.isWekelijks", this.cronData.isWekelijks);
                 this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
             };
-            Crontab.prototype._setCron = function () {
-                this._checkWeekDays();
-                this.cron = [];
-                var splitBegin = this.cronData.startDate.split("-");
-                var beginYear = parseInt(splitBegin[0]);
-                var beginMonth = parseInt(splitBegin[1]);
-                var beginDay = parseInt(splitBegin[2]);
-                var splitEnd = this.cronData.endDate.split("-");
-                var endYear = parseInt(splitEnd[0]);
-                var endMonth = parseInt(splitEnd[1]);
-                var endDay = parseInt(splitEnd[2]);
-                if (this.cronData.eindDatumCheck) {
-                    if (beginYear == endYear) {
-                        this.cronData.year = beginYear.toString();
-                        if (beginMonth == endMonth) {
-                            if (beginDay <= endDay) {
-                                var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + endDay.toString() + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                                this.cron.push(temp);
-                            }
-                        }
-                        else if (beginMonth < endMonth) {
-                            var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + this._checkmonth(beginMonth) + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cron.push(temp);
-                            for (var i = (beginMonth + 1); i < endMonth; i++) {
-                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                                this.cron.push(temp);
-                            }
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + this.cronData.year;
-                            this.cron.push(temp);
-                        }
-                    }
-                    else if (beginYear < endYear) {
-                        var interYears = ((endYear) - beginYear);
-                        var temp = this.cronData.minute + " " + this.cronData.hour + " " + beginDay.toString() + "-" + this._checkmonth(beginMonth) + " " + beginMonth.toString() + " " + this.cronData.dayOfWeek + " " + beginYear;
-                        this.cron.push(temp);
-                        for (var i = (beginMonth + 1); i <= 12; i++) {
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + beginYear;
-                            this.cron.push(temp);
-                        }
-                        for (var i = 1; i < interYears; i++) {
-                            for (var x = 1; x <= 12; x++) {
-                                temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + x + " " + this.cronData.dayOfWeek + " " + (beginYear + i);
-                                this.cron.push(temp);
-                            }
-                        }
-                        for (var i = 1; i < endMonth; i++) {
-                            temp = this.cronData.minute + " " + this.cronData.hour + " " + "* " + i + " " + this.cronData.dayOfWeek + " " + endYear;
-                            this.cron.push(temp);
-                        }
-                        temp = this.cronData.minute + " " + this.cronData.hour + " " + "1-" + endDay.toString() + " " + endMonth.toString() + " " + this.cronData.dayOfWeek + " " + endYear;
-                        this.cron.push(temp);
-                    }
+            Crontab.prototype._intervalCheck = function () {
+                if (this.cronData.leapDaysCheck) {
+                    return ("/" + this.cronData.leapDays);
                 }
-                console.log(this.cron);
+                else {
+                    return "";
+                }
             };
             Crontab.prototype._checkWeekDays = function () {
-                if (this.cronData.weekDaysCheck) {
-                    this.cronData.dayOfWeek = "1-5";
+                if (this.cronData.isDagelijks) {
+                    if (this.cronData.weekDaysCheck) {
+                        return "1-5";
+                    }
+                    return "*";
                 }
-                else
-                    this.cronData.dayOfWeek = "*";
+                else if (this.cronData.isWekelijks) {
+                    this._setWeekArray([this.cronData.mondayCheck, this.cronData.tuesdayCheck, this.cronData.wednessdayCheck, this.cronData.thursdayCheck, this.cronData.fridayCheck, this.cronData.saturdayCheck, this.cronData.sundayCheck]);
+                    var temp;
+                    temp = "";
+                    this.weekArray.forEach(function (day, i) {
+                        if (day) {
+                            temp = temp + (i + 1).toString() + ",";
+                        }
+                    });
+                    return temp.slice(0, -1);
+                }
             };
             Crontab.prototype._checkmonth = function (month) {
-                //if ()
                 switch (month) {
                     case 1:
                     case 3:
@@ -155,7 +127,7 @@ var VidyanoCrontab;
                 Vidyano.WebComponents.WebComponent.register({
                     properties: {
                         cron: {
-                            type: Array
+                            type: String
                         },
                         weekArray: {
                             type: Array,
@@ -171,7 +143,9 @@ var VidyanoCrontab;
                         },
                         test: String
                     },
-                    observers: []
+                    observers: [
+                        "_createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month)"
+                    ]
                 }, "vc")
             ], Crontab);
             return Crontab;
