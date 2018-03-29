@@ -1,1 +1,46 @@
-﻿
+﻿:host .card-container {
+  height: 100%;
+  padding-left: 2%; }
+
+:host .submitButton {
+  width: 20%;
+  align-self: flex-end;
+  background-color: #4682B4;
+  color: #f1f1f1;
+  padding: 5px 0px;
+  margin-right: 2%; }
+
+:host .test {
+  border: 1px solid #ff0000; }
+
+:host paper-radio-button {
+  padding: 0; }
+
+:host .bumpRight {
+  padding-left: 3%; }
+
+:host .bumpRightExtra {
+  padding-left: 5.5%; }
+
+:host .patternCheck {
+  width: 30%; }
+
+:host h2 {
+  background-color: #48555e;
+  color: #f1f1f1;
+  margin-left: 2%;
+  margin-right: 2%;
+  padding: 2%; }
+
+:host p {
+  margin-left: 2%;
+  padding-left: 2%; }
+
+:host .checkBoxes {
+  width: 66%;
+  margin-left: 2%;
+  padding-left: 2%; }
+
+:host .checkBoxes paper-checkbox {
+  padding-top: 1%; }
+

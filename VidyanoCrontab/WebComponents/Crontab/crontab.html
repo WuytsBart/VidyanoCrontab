@@ -1,64 +1,55 @@
 ﻿<dom-module id="vc-crontab" >
-    <template>
+    <template class="test">
         <link rel="stylesheet" href="crontab.css" />
         <link href="../../libs/paper-radio-button/paper-radio-button.html" rel="import" />
         <link href="../../libs/paper-radio-group/paper-radio-group.html" rel="import" />
         <link href="../../libs/paper-checkbox/paper-checkbox.html" rel="import" />
-        <link href="../../libs/iron-flex-layout/iron-flex-layout-classes.html" rel="import" />
-        <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
-        <div>
-            <div>
+       
+        <div class="horizontal layout center-justified card-container">
+            <div class="vertical layout center-justified test">
                 <h2>Type terugkeerpatroon</h2>
                 <paper-radio-group>
-                    <paper-radio-button name="dagelijks" on-tap="_setDagelijks" checked="{{cronData.isDagelijks}}">Dagelijks</paper-radio-button>
-                    <paper-radio-button name="wekelijks" on-tap="_setWekelijks">Wekelijks</paper-radio-button>
-                    <paper-radio-button name="maandelijks" on-tap="_setMaandelijks">Maandelijks</paper-radio-button>
+                    <paper-radio-button class="patternCheck bumpRight" name="dagelijks" on-tap="_setDagelijks" checked="{{cronData.isDagelijks}}">Dagelijks</paper-radio-button>
+                    <paper-radio-button class="patternCheck" name="wekelijks" on-tap="_setWekelijks">Wekelijks</paper-radio-button>
+                    <paper-radio-button class="patternCheck" name="maandelijks" on-tap="_setMaandelijks">Maandelijks</paper-radio-button>
                 </paper-radio-group>
-            </div>
-            <div>
+            
                 <template is="dom-if" if="[[cronData.isDagelijks]]">
                     <div >
-                        <h2>Welk uur van de dag wilt u het event starten?</h2>
-                        <p>Uur:</p>
-                        <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
-                        <p>Minuten:</p>
-                        <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+                        <h2>Wanneer wilt u het event starten?</h2>
+                        <p>Om <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" /> uur en <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" /> minuten </p>
                         <h2>Terugkeerpatroon</h2>
                         <paper-radio-group>
-                            <paper-radio-button name="loopdaysCheck" checked="{{cronData.leapDaysCheck}}">elke <input type="number" name="LeapDays" value="{{cronData.leapDays::input}}" min="1" max="31" /> dag(en)</paper-radio-button>
-                            <paper-radio-button name="weekDayCheck" checked="{{cronData.weekDaysCheck}}">enkel weekdagen</paper-radio-button>
+                            <paper-radio-button name="loopdaysCheck" class="bumpRightExtra" checked="{{cronData.leapDaysCheck}}">elke <input type="number" name="LeapDays" value="{{cronData.leapDays::input}}" min="1" max="31" /> dag(en)</paper-radio-button><br />
+                            <paper-radio-button name="weekDayCheck" class="bumpRightExtra" checked="{{cronData.weekDaysCheck}}">enkel weekdagen</paper-radio-button>
                         </paper-radio-group>
                     </div>
                 </template>
                 <template is="dom-if" if="[[cronData.isWekelijks]]">
                     <div>
-                        <h2>Welk uur van de dag wilt u het event starten?</h2>
-                        <p>Uur:</p>
-                        <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
-                        <p>Minuten:</p>
-                        <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+                        <h2>Wanneer wilt u het event starten?</h2>
+                        <p>Om <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" /> uur en <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" /> minuten </p>
                         <h2>Terugkeerpatroon</h2>
-                        <paper-checkbox name="Monday" checked="{{cronData.mondayCheck}}">Maandag</paper-checkbox>
-                        <paper-checkbox name="Tuesday" checked="{{cronData.tuesdayCheck}}">Dinsdag</paper-checkbox>
-                        <paper-checkbox name="Wednessday" checked="{{cronData.wednessdayCheck}}">Woensdag</paper-checkbox>
-                        <paper-checkbox name="Thursday" checked="{{cronData.thursdayCheck}}">Donderdag</paper-checkbox>
-                        <paper-checkbox name="Friday" checked="{{cronData.fridayCheck}}">Vrijdag</paper-checkbox>
-                        <paper-checkbox name="Saturday" checked="{{cronData.saturdayCheck}}">Zaterdag</paper-checkbox>
-                        <paper-checkbox name="Sunday" checked="{{cronData.sundayCheck}}">Zondag</paper-checkbox>
+                        <div class="checkBoxes">
+                            <paper-checkbox name="Monday" checked="{{cronData.mondayCheck}}">Maandag</paper-checkbox>
+                            <paper-checkbox name="Tuesday" checked="{{cronData.tuesdayCheck}}">Dinsdag</paper-checkbox>
+                            <paper-checkbox name="Wednessday" checked="{{cronData.wednessdayCheck}}">Woensdag</paper-checkbox>
+                            <paper-checkbox name="Thursday" checked="{{cronData.thursdayCheck}}">Donderdag</paper-checkbox>
+                            <paper-checkbox name="Friday" checked="{{cronData.fridayCheck}}">Vrijdag</paper-checkbox>
+                            <paper-checkbox name="Saturday" checked="{{cronData.saturdayCheck}}">Zaterdag</paper-checkbox>
+                            <paper-checkbox name="Sunday" checked="{{cronData.sundayCheck}}">Zondag</paper-checkbox>
+                        </div>
                     </div>
                 </template>
                 <template is="dom-if" if="[[cronData.isMaandelijks]]">
                     <div>
-                        <h2>Welk uur van de dag wilt u het event starten?</h2>
-                        <p>Uur:</p>
-                        <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" />
-                        <p>Minuten:</p>
-                        <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" />
+                        <h2>Wanneer wilt u het event starten?</h2>
+                        <p>Om <input type="number" name="beginuur" min="0" max="23" value="{{cronData.hour::input}}" /> uur en <input type="number" name="beginminuten" min="0" max="59" value="{{cronData.minute::input}}" /> minuten </p>
                         <h2>Terugkeerpatroon</h2>
-                        <div>Dag <input type="number" name="name" value="{{cronData.dayOfMonth::input}}" min="1" max="31" /> van elke maand</div>
+                        <p>Dag <input type="number" name="name" value="{{cronData.dayOfMonth::input}}" min="1" max="31" /> van elke maand</p>
                     </div>
                 </template>
-                <button on-tap="_submitFunction">Submit</button>
+                <button on-tap="_submitFunction" class="submitButton">Submit</button>
             </div>
         </div>
     </template>
