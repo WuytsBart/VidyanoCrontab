@@ -21,7 +21,6 @@ var VidyanoCrontab;
                                 return [4 /*yield*/, this.app.importComponent("Select")];
                             case 1:
                                 _a.sent();
-                                this._setMonthArray(["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"]);
                                 this._setCronData({
                                     isDagelijks: true,
                                     isWekelijks: false,
@@ -31,8 +30,6 @@ var VidyanoCrontab;
                                     dayOfMonth: "*",
                                     month: "*",
                                     dayOfWeek: "",
-                                    year: "*",
-                                    startDate: "",
                                     weekDaysCheck: false,
                                     leapDaysCheck: false,
                                     leapDays: "1",
@@ -49,9 +46,8 @@ var VidyanoCrontab;
                     });
                 });
             };
-            Crontab.prototype._testFunction = function () {
+            Crontab.prototype._submitFunction = function () {
                 this._createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month);
-                console.log(this.cron);
             };
             Crontab.prototype._setDagelijks = function () {
                 this.cronData.isDagelijks = true;
@@ -103,24 +99,8 @@ var VidyanoCrontab;
                     });
                     return temp.slice(0, -1);
                 }
-            };
-            Crontab.prototype._checkmonth = function (month) {
-                switch (month) {
-                    case 1:
-                    case 3:
-                    case 5:
-                    case 7:
-                    case 8:
-                    case 10:
-                    case 12:
-                        return 31;
-                    case 2:
-                        return 28;
-                    case 4:
-                    case 6:
-                    case 9:
-                    case 11:
-                        return 30;
+                else {
+                    return "*";
                 }
             };
             Crontab = __decorate([
