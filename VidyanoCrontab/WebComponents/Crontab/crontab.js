@@ -9,8 +9,7 @@ var VidyanoCrontab;
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             Crontab.prototype._createCron = function (minute, hour, dayOfMonth, month) {
-                this._intervalCheck();
-                this.cron = minute + " " + hour + " " + dayOfMonth + this._intervalCheck() + " " + month + " " + this._checkWeekDays();
+                this.cron = this.cronData.seconds + " " + minute + " " + hour + " " + dayOfMonth + this._intervalCheck() + " " + month + " " + this._checkWeekDays();
             };
             Crontab.prototype.attached = function () {
                 return __awaiter(this, void 0, void 0, function () {
@@ -25,6 +24,7 @@ var VidyanoCrontab;
                                     isDagelijks: true,
                                     isWekelijks: false,
                                     isMaandelijks: false,
+                                    seconds: "0",
                                     minute: "*",
                                     hour: "*",
                                     dayOfMonth: "*",
@@ -48,6 +48,7 @@ var VidyanoCrontab;
             };
             Crontab.prototype._submitFunction = function () {
                 this._createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month);
+                console.log(this.cron);
             };
             Crontab.prototype._setDagelijks = function () {
                 this.cronData.isDagelijks = true;
@@ -117,11 +118,6 @@ var VidyanoCrontab;
                             type: Object,
                             readOnly: true
                         },
-                        monthArray: {
-                            type: Array,
-                            readOnly: true
-                        },
-                        test: String
                     },
                     observers: [
                         "_createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month)"

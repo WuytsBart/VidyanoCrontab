@@ -2,6 +2,10 @@
     .card-container {
         height: 100%;
         padding-left: 2%;
+       
+    }
+    .test {
+        border: 1px solid #ff0000;
     }
 
     .submitButton {
@@ -14,16 +18,14 @@
         margin-top: 2%;
     }
 
-    .test {
-        border: 1px solid #ff0000;
-    }
-
+    
     .widthFix {
-        width: 550px;
+       width: 900px;
     }
 
     paper-radio-button {
         padding: 0;
+        
     }
 
     .bumpRight {
@@ -31,12 +33,12 @@
     }
 
     .bumpRightExtra {
-        margin-left: 11%;
+        margin-left: 15%;
         width: 150%;
     }
 
     .patternCheck {
-        width: 30%;
+        width: 100px;
     }
 
     h2 {
@@ -54,13 +56,17 @@
     }
 
     .checkBoxes {
-        width: 75%;
+        
         margin-left: 2%;
-        padding-left: 2%;
+        padding-left: 1%;
     }
 
     .checkBoxes paper-checkbox {
-        padding-top: 1%;
-        width: 100px;
+        padding-top: 1%; 
+        width: 150px;
     }
+    .hidden {
+        visibility: hidden;
+    }
+    
 }

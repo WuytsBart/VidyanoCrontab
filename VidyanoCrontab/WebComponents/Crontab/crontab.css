@@ -2,6 +2,9 @@
   height: 100%;
   padding-left: 2%; }
 
+:host .test {
+  border: 1px solid #ff0000; }
+
 :host .submitButton {
   width: 20%;
   align-self: flex-end;
@@ -11,11 +14,8 @@
   margin-right: 2%;
   margin-top: 2%; }
 
-:host .test {
-  border: 1px solid #ff0000; }
-
 :host .widthFix {
-  width: 550px; }
+  width: 900px; }
 
 :host paper-radio-button {
   padding: 0; }
@@ -24,11 +24,11 @@
   padding-left: 3%; }
 
 :host .bumpRightExtra {
-  margin-left: 11%;
+  margin-left: 15%;
   width: 150%; }
 
 :host .patternCheck {
-  width: 30%; }
+  width: 100px; }
 
 :host h2 {
   background-color: #48555e;
@@ -43,11 +43,13 @@
   font-size: 14px; }
 
 :host .checkBoxes {
-  width: 75%;
   margin-left: 2%;
-  padding-left: 2%; }
+  padding-left: 1%; }
 
 :host .checkBoxes paper-checkbox {
   padding-top: 1%;
-  width: 100px; }
+  width: 150px; }
+
+:host .hidden {
+  visibility: hidden; }
 

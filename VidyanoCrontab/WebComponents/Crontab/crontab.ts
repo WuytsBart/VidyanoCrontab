@@ -13,11 +13,7 @@ namespace VidyanoCrontab.WebComponents {
                 type: Object,
                 readOnly: true
             },
-            monthArray: {
-                type: Array,
-                readOnly: true
-            },
-            test: String
+            
         },
 
         observers: [
@@ -31,8 +27,8 @@ namespace VidyanoCrontab.WebComponents {
         cron: String; 
         
         private _createCron(minute: String, hour: String, dayOfMonth: String, month: String) {
-            this._intervalCheck();
-            this.cron = `${minute} ${hour} ${dayOfMonth}${this._intervalCheck()} ${month} ${this._checkWeekDays()}`;
+            
+            this.cron = `${this.cronData.seconds} ${minute} ${hour} ${dayOfMonth}${this._intervalCheck()} ${month} ${this._checkWeekDays()}`;
         }
 
 
@@ -44,6 +40,7 @@ namespace VidyanoCrontab.WebComponents {
                 isDagelijks: true,
                 isWekelijks: false,
                 isMaandelijks: false,
+                seconds: "0",
                 minute: "*",
                 hour: "*",
                 dayOfMonth: "*",
@@ -65,6 +62,7 @@ namespace VidyanoCrontab.WebComponents {
 
         private _submitFunction(): void {
             this._createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month);
+            console.log(this.cron);
         }
 
         private _setDagelijks() {
@@ -132,6 +130,7 @@ namespace VidyanoCrontab.WebComponents {
         isDagelijks: boolean;
         isWekelijks: boolean;
         isMaandelijks: boolean;
+        seconds: string;
         minute: string;
         hour: string,
         dayOfMonth: string,
