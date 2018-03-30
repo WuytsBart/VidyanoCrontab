@@ -1,8 +1,10 @@
 :host {
+    * {
+        font-size: 20px;
+    }
     .card-container {
         height: 100%;
-        padding-left: 2%;
-       
+        padding-left: 2%;   
     }
     .test {
         border: 1px solid #ff0000;
@@ -25,7 +27,7 @@
 
     paper-radio-button {
         padding: 0;
-        
+        margin-left: 3%;
     }
 
     .bumpRight {
@@ -38,7 +40,8 @@
     }
 
     .patternCheck {
-        width: 100px;
+        width: 200px;
+        margin-left: 4%;
     }
 
     h2 {
@@ -65,8 +68,8 @@
         padding-top: 1%; 
         width: 150px;
     }
-    .hidden {
-        visibility: hidden;
+    vi-checkbox {
+        
     }
-    
-}
+    }
+

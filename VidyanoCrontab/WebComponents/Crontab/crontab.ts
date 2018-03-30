@@ -3,7 +3,8 @@ namespace VidyanoCrontab.WebComponents {
         properties: {
 
             cron: {
-                type: String
+                type: String,
+                computed: "_createCron(cronData.minute, cronData.hour, cronData.dayOfMonth, cronData.month, cronData.leapDays, cronData.weekDaysCheck, cronData.leapDaysCheck, cronData.mondayCheck, cronData.tuesdayCheck, cronData.wednessdayCheck, cronData.thursdayCheck, cronData.fridayCheck, cronData.saturdayCheck, cronData.sundayCheck, cronData.isDagelijks, cronData.isWekelijks, cronData.isMaandelijks)"
             },
             weekArray: {
                 type: Array,
@@ -13,6 +14,62 @@ namespace VidyanoCrontab.WebComponents {
                 type: Object,
                 readOnly: true
             },
+            interval: {
+                type: String,
+                computed: "_intervalCheck(cronData.leapDaysCheck)"
+            },
+            dayOfMonth: {
+                type: String,
+                computed: "_getDayOfMonth(cronData.isMaandelijks)"
+            },
+            seconds: {
+                type: String,
+                value: "0"
+            },
+            minute: {
+                type: String,
+                value: "*"
+            },
+            hour: {
+                type: String,
+                value: "*"
+            },
+            month: {
+                type: String,
+                value: "*"
+            },
+            dayOfWeek: {
+                type: String,
+                value: "*"
+            },
+            isDagelijks: {
+                type: Boolean,
+                value: true
+            },
+            isWekelijks: {
+                type: Boolean,
+                value: false
+            },
+            isMaandelijks: {
+                type: Boolean,
+                value: false
+            },
+            weekDaysCheck: {
+                type: Boolean,
+                value: false
+            },
+            leapDaysCheck: {
+                type: Boolean,
+                value: false
+            },
+            leapDays: {
+                type: String,
+                value: "*"
+            },
+
+
+
+
             
         },
 
@@ -27,10 +84,13 @@ namespace VidyanoCrontab.WebComponents {
         cron: String; 
         
         private _createCron(minute: String, hour: String, dayOfMonth: String, month: String) {
-            
-            this.cron = `${this.cronData.seconds} ${minute} ${hour} ${dayOfMonth}${this._intervalCheck()} ${month} ${this._checkWeekDays()}`;
+
+            return `${this.cronData.seconds} ${minute} ${hour} ${this._getDayOfMonth()}${this._intervalCheck(this.cronData.leapDaysCheck)} ${month} ${this._checkWeekDays()}`;
         }
 
+        private _testFunction() {
+            console.log(this.cron);
+        }
 
         async attached() {
             super.attached();
@@ -58,6 +118,15 @@ namespace VidyanoCrontab.WebComponents {
                 sundayCheck: false
                 
             })
+        }
+
+        private _getDayOfMonth() {
+            if (this.cronData.isMaandelijks) {
+                return this.cronData.dayOfMonth
+            }
+            else {
+                return "*";
+            }
         }
 
         private _submitFunction(): void {
@@ -90,14 +159,23 @@ namespace VidyanoCrontab.WebComponents {
             this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
         }
 
-        private _intervalCheck() {
-            if (this.cronData.leapDaysCheck) {
-                return ("/" + this.cronData.leapDays);
+        private _intervalCheck(leapDayCheck) {
+            if (this.cronData.isDagelijks) {
+
+                if (leapDayCheck) {
+                    return ("/" + this.cronData.leapDays);
+                }
+                else {
+                    return "";
+                }
             }
-            else {
-                return "";
-            }
+                else {
+                    return "";
+                }
+            
         }
+
+        
         
         private _checkWeekDays() {
 
@@ -108,7 +186,7 @@ namespace VidyanoCrontab.WebComponents {
                 return "*";
             }
             else if (this.cronData.isWekelijks) {
-                this._setWeekArray([this.cronData.mondayCheck, this.cronData.tuesdayCheck, this.cronData.wednessdayCheck, this.cronData.thursdayCheck, this.cronData.fridayCheck, this.cronData.saturdayCheck, this.cronData.sundayCheck]);
+                
                 var temp: string;
                 temp = "";
                 this.weekArray.forEach(function (day, i) {
@@ -116,9 +194,12 @@ namespace VidyanoCrontab.WebComponents {
                         temp = temp + (i + 1).toString() + ","
                     }
                 })
+                if (temp != "") {
 
-                return temp.slice(0, -1);
 
+                    return temp.slice(0, -1);
+                }
+                else { return  "*" }
             }
             else {
                 return "*";
@@ -136,8 +217,8 @@ namespace VidyanoCrontab.WebComponents {
         dayOfMonth: string,
         month: string,
         dayOfWeek: string,
-        leapDaysCheck: Boolean,
-        weekDaysCheck: Boolean,
+        leapDaysCheck: boolean,
+        weekDaysCheck: boolean,
         leapDays: string,
         mondayCheck: boolean,
         tuesdayCheck: boolean,

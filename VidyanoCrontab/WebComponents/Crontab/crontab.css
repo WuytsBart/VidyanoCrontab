@@ -1,4 +1,7 @@
-﻿:host .card-container {
+﻿:host * {
+  font-size: 20px; }
+
+:host .card-container {
   height: 100%;
   padding-left: 2%; }
 
@@ -18,7 +21,8 @@
   width: 900px; }
 
 :host paper-radio-button {
-  padding: 0; }
+  padding: 0;
+  margin-left: 3%; }
 
 :host .bumpRight {
   padding-left: 3%; }
@@ -28,7 +32,8 @@
   width: 150%; }
 
 :host .patternCheck {
-  width: 100px; }
+  width: 200px;
+  margin-left: 4%; }
 
 :host h2 {
   background-color: #48555e;
@@ -49,7 +54,4 @@
 :host .checkBoxes paper-checkbox {
   padding-top: 1%;
   width: 150px; }
-
-:host .hidden {
-  visibility: hidden; }
 

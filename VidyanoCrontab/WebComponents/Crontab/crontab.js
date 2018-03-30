@@ -9,7 +9,10 @@ var VidyanoCrontab;
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             Crontab.prototype._createCron = function (minute, hour, dayOfMonth, month) {
-                this.cron = this.cronData.seconds + " " + minute + " " + hour + " " + dayOfMonth + this._intervalCheck() + " " + month + " " + this._checkWeekDays();
+                return this.cronData.seconds + " " + minute + " " + hour + " " + this._getDayOfMonth() + this._intervalCheck(this.cronData.leapDaysCheck) + " " + month + " " + this._checkWeekDays();
+            };
+            Crontab.prototype._testFunction = function () {
+                console.log(this.cron);
             };
             Crontab.prototype.attached = function () {
                 return __awaiter(this, void 0, void 0, function () {
@@ -46,6 +49,14 @@ var VidyanoCrontab;
                     });
                 });
             };
+            Crontab.prototype._getDayOfMonth = function () {
+                if (this.cronData.isMaandelijks) {
+                    return this.cronData.dayOfMonth;
+                }
+                else {
+                    return "*";
+                }
+            };
             Crontab.prototype._submitFunction = function () {
                 this._createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month);
                 console.log(this.cron);
@@ -74,9 +85,14 @@ var VidyanoCrontab;
                 this.notifyPath("cronData.isWekelijks", this.cronData.isWekelijks);
                 this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
             };
-            Crontab.prototype._intervalCheck = function () {
-                if (this.cronData.leapDaysCheck) {
-                    return ("/" + this.cronData.leapDays);
+            Crontab.prototype._intervalCheck = function (leapDayCheck) {
+                if (this.cronData.isDagelijks) {
+                    if (leapDayCheck) {
+                        return ("/" + this.cronData.leapDays);
+                    }
+                    else {
+                        return "";
+                    }
                 }
                 else {
                     return "";
@@ -90,7 +106,6 @@ var VidyanoCrontab;
                     return "*";
                 }
                 else if (this.cronData.isWekelijks) {
-                    this._setWeekArray([this.cronData.mondayCheck, this.cronData.tuesdayCheck, this.cronData.wednessdayCheck, this.cronData.thursdayCheck, this.cronData.fridayCheck, this.cronData.saturdayCheck, this.cronData.sundayCheck]);
                     var temp;
                     temp = "";
                     this.weekArray.forEach(function (day, i) {
@@ -98,7 +113,12 @@ var VidyanoCrontab;
                             temp = temp + (i + 1).toString() + ",";
                         }
                     });
-                    return temp.slice(0, -1);
+                    if (temp != "") {
+                        return temp.slice(0, -1);
+                    }
+                    else {
+                        return "*";
+                    }
                 }
                 else {
                     return "*";
@@ -108,7 +128,8 @@ var VidyanoCrontab;
                 Vidyano.WebComponents.WebComponent.register({
                     properties: {
                         cron: {
-                            type: String
+                            type: String,
+                            computed: "_createCron(cronData.minute, cronData.hour, cronData.dayOfMonth, cronData.month, cronData.leapDays, cronData.weekDaysCheck, cronData.leapDaysCheck, cronData.mondayCheck, cronData.tuesdayCheck, cronData.wednessdayCheck, cronData.thursdayCheck, cronData.fridayCheck, cronData.saturdayCheck, cronData.sundayCheck, cronData.isDagelijks, cronData.isWekelijks, cronData.isMaandelijks)"
                         },
                         weekArray: {
                             type: Array,
@@ -117,6 +138,58 @@ var VidyanoCrontab;
                         cronData: {
                             type: Object,
                             readOnly: true
+                        },
+                        interval: {
+                            type: String,
+                            computed: "_intervalCheck(cronData.leapDaysCheck)"
+                        },
+                        dayOfMonth: {
+                            type: String,
+                            computed: "_getDayOfMonth(cronData.isMaandelijks)"
+                        },
+                        seconds: {
+                            type: String,
+                            value: "0"
+                        },
+                        minute: {
+                            type: String,
+                            value: "*"
+                        },
+                        hour: {
+                            type: String,
+                            value: "*"
+                        },
+                        month: {
+                            type: String,
+                            value: "*"
+                        },
+                        dayOfWeek: {
+                            type: String,
+                            value: "*"
+                        },
+                        isDagelijks: {
+                            type: Boolean,
+                            value: true
+                        },
+                        isWekelijks: {
+                            type: Boolean,
+                            value: false
+                        },
+                        isMaandelijks: {
+                            type: Boolean,
+                            value: false
+                        },
+                        weekDaysCheck: {
+                            type: Boolean,
+                            value: false
+                        },
+                        leapDaysCheck: {
+                            type: Boolean,
+                            value: false
+                        },
+                        leapDays: {
+                            type: String,
+                            value: "*"
                         },
                     },
                     observers: [
