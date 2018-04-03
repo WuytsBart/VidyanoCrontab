@@ -2,51 +2,33 @@
     * {
         font-size: 20px;
     }
+
     .card-container {
         height: 100%;
-        padding-left: 2%;   
+        padding-left: 2%;
     }
+
     .test {
         border: 1px solid #ff0000;
     }
 
-    .submitButton {
-        width: 20%;
-        align-self: flex-end;
-        background-color: #4682B4;
-        color: #f1f1f1;
-        padding: 5px 0px;
-        margin-right: 2%;
-        margin-top: 2%;
-    }
 
-    
+
     .widthFix {
-       width: 900px;
+        width: 900px;
     }
 
-    paper-radio-button {
-        padding: 0;
-        margin-left: 3%;
-    }
-
-    .bumpRight {
-        padding-left: 3%;
-    }
-
-    .bumpRightExtra {
-        margin-left: 15%;
-        width: 150%;
+    vi-checkbox {
+        margin-left: 4%;
     }
 
     .patternCheck {
         width: 200px;
-        margin-left: 4%;
     }
 
     h2 {
-        background-color: #48555e;
-        color: #f1f1f1;
+        background-color: var(--theme-color-darker);
+        color: var(--theme-color-lighter);
         margin-left: 2%;
         margin-right: 2%;
         padding: 2%;
@@ -55,21 +37,30 @@
     p {
         margin-left: 2%;
         padding-left: 2%;
-        font-size: 14px;
+        font-size: 20px;
     }
 
     .checkBoxes {
-        
         margin-left: 2%;
         padding-left: 1%;
     }
 
     .checkBoxes paper-checkbox {
-        padding-top: 1%; 
+        padding-top: 1%;
         width: 150px;
     }
-    vi-checkbox {
-        
-    }
+
+    .checkBoxFix {
+        margin-left: 4%;
+        width: 2%;
     }
 
+    .labelFix {
+        display: flex;
+        height: 50px;
+        align-items: center;
+        label {
+            margin-left: .5%;
+        }
+    }
+}

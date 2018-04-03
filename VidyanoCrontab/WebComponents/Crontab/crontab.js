@@ -39,7 +39,7 @@ var VidyanoCrontab;
                         this._setWeekData([
                             {
                                 label: "Maandag",
-                                checked: false,
+                                checked: true,
                             },
                             {
                                 label: "Dinsdag",
@@ -146,6 +146,7 @@ var VidyanoCrontab;
                     properties: {
                         cron: {
                             type: String,
+                            //value: "0 10 7 * * 1, 2, 7"
                             computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
                         },
                         seconds: {

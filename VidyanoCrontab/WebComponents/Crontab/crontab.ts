@@ -5,6 +5,7 @@ namespace VidyanoCrontab.WebComponents {
 
             cron: {
                 type: String,
+                //value: "0 10 7 * * 1, 2, 7"
                 computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
             },                      
             seconds: {
@@ -66,7 +67,6 @@ namespace VidyanoCrontab.WebComponents {
     }, "vc")
     export class Crontab extends Vidyano.WebComponents.WebComponent {
         readonly weekData: IWeekDay[]; private _setWeekData: (value: IWeekDay[]) => void;
-         
         cron: string;
         seconds: string;
         isDagelijks: boolean;
@@ -114,7 +114,7 @@ namespace VidyanoCrontab.WebComponents {
             this._setWeekData([
                 {
                     label: "Maandag",
-                    checked: false,
+                    checked: true,
                     
                 },
                 {

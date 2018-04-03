@@ -8,36 +8,18 @@
 :host .test {
   border: 1px solid #ff0000; }
 
-:host .submitButton {
-  width: 20%;
-  align-self: flex-end;
-  background-color: #4682B4;
-  color: #f1f1f1;
-  padding: 5px 0px;
-  margin-right: 2%;
-  margin-top: 2%; }
-
 :host .widthFix {
   width: 900px; }
 
-:host paper-radio-button {
-  padding: 0;
-  margin-left: 3%; }
-
-:host .bumpRight {
-  padding-left: 3%; }
-
-:host .bumpRightExtra {
-  margin-left: 15%;
-  width: 150%; }
-
-:host .patternCheck {
-  width: 200px;
+:host vi-checkbox {
   margin-left: 4%; }
 
+:host .patternCheck {
+  width: 200px; }
+
 :host h2 {
-  background-color: #48555e;
-  color: #f1f1f1;
+  background-color: var(--theme-color-darker);
+  color: var(--theme-color-lighter);
   margin-left: 2%;
   margin-right: 2%;
   padding: 2%; }
@@ -45,7 +27,7 @@
 :host p {
   margin-left: 2%;
   padding-left: 2%;
-  font-size: 14px; }
+  font-size: 20px; }
 
 :host .checkBoxes {
   margin-left: 2%;
@@ -54,4 +36,15 @@
 :host .checkBoxes paper-checkbox {
   padding-top: 1%;
   width: 150px; }
+
+:host .checkBoxFix {
+  margin-left: 4%;
+  width: 2%; }
+
+:host .labelFix {
+  display: flex;
+  height: 50px;
+  align-items: center; }
+  :host .labelFix label {
+    margin-left: .5%; }
 
