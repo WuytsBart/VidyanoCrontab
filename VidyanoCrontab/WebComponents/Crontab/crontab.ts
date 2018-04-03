@@ -1,27 +1,12 @@
+
 namespace VidyanoCrontab.WebComponents {
     @Vidyano.WebComponents.WebComponent.register({
         properties: {
 
             cron: {
                 type: String,
-                computed: "_createCron(cronData.minute, cronData.hour, cronData.dayOfMonth, cronData.month, cronData.leapDays, cronData.weekDaysCheck, cronData.leapDaysCheck, cronData.mondayCheck, cronData.tuesdayCheck, cronData.wednessdayCheck, cronData.thursdayCheck, cronData.fridayCheck, cronData.saturdayCheck, cronData.sundayCheck, cronData.isDagelijks, cronData.isWekelijks, cronData.isMaandelijks)"
-            },
-            weekArray: {
-                type: Array,
-                readOnly: true
-            },
-            cronData: {
-                type: Object,
-                readOnly: true
-            },
-            interval: {
-                type: String,
-                computed: "_intervalCheck(cronData.leapDaysCheck)"
-            },
-            dayOfMonth: {
-                type: String,
-                computed: "_getDayOfMonth(cronData.isMaandelijks)"
-            },
+                computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
+            },                      
             seconds: {
                 type: String,
                 value: "0"
@@ -66,104 +51,141 @@ namespace VidyanoCrontab.WebComponents {
                 type: String,
                 value: "*"
             },
+            dayOfMonth: {
+                type: String,
+                value: "*"
+            },
+            weekData: {
+                type: Array,
+                readOnly: true,
 
-
-
-
-            
+            }            
+                        
         },
-
-        observers: [
-            "_createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month)"
-        ]
 
     }, "vc")
     export class Crontab extends Vidyano.WebComponents.WebComponent {
-        readonly weekArray: boolean[]; private _setWeekArray: (value: boolean[]) => void;
-        readonly cronData: ICronData; private _setCronData: (value: ICronData) => void;
-        cron: String; 
-        
-        private _createCron(minute: String, hour: String, dayOfMonth: String, month: String) {
+        readonly weekData: IWeekDay[]; private _setWeekData: (value: IWeekDay[]) => void;
+         
+        cron: string;
+        seconds: string;
+        isDagelijks: boolean;
+        isWekelijks: boolean;
+        isMaandelijks: boolean;
+        minute: string;
+        hour: string;
+        dayOfMonth: string;
+        month: string;
+        dayOfWeek: string;
+        leapDaysCheck: boolean;
+        weekDaysCheck: boolean;
+        leapDays: string;
 
-            return `${this.cronData.seconds} ${minute} ${hour} ${this._getDayOfMonth()}${this._intervalCheck(this.cronData.leapDaysCheck)} ${month} ${this._checkWeekDays()}`;
+        private _createCron() {
+            return `${this.seconds} ${this.minute} ${this.hour} ${this._getDayOfMonth()}${this._intervalCheck(this.leapDaysCheck)} ${this.month} ${this._checkWeekDays()}`;
         }
 
-        private _testFunction() {
-            console.log(this.cron);
+        private _leap() {                       
+            if (this.leapDaysCheck) {
+                this.weekDaysCheck = false;
+                this.notifyPath("weekDaysCheck", this.weekDaysCheck);
+            }
+        }
+
+        private _week() {
+            if (this.weekDaysCheck) {
+                this.leapDaysCheck = false;
+                this.notifyPath("leapDaysCheck", this.leapDaysCheck);
+            }
+        }
+
+        private _notifyWeekDays() {
+            this.notifyPath("weekData.0.*", this.weekData[0].checked)
+            this.notifyPath("weekData.1.*", this.weekData[1].checked)
+            this.notifyPath("weekData.2.*", this.weekData[2].checked)
+            this.notifyPath("weekData.3.*", this.weekData[3].checked)
+            this.notifyPath("weekData.4.*", this.weekData[4].checked)
+            this.notifyPath("weekData.5.*", this.weekData[5].checked)
+            this.notifyPath("weekData.6.*", this.weekData[6].checked)
         }
 
         async attached() {
             super.attached();
-
-            await this.app.importComponent("Select");
-            this._setCronData({
-                isDagelijks: true,
-                isWekelijks: false,
-                isMaandelijks: false,
-                seconds: "0",
-                minute: "*",
-                hour: "*",
-                dayOfMonth: "*",
-                month: "*",
-                dayOfWeek: "",
-                weekDaysCheck: false,
-                leapDaysCheck: false,
-                leapDays: "1",
-                mondayCheck: false,
-                tuesdayCheck: false,
-                wednessdayCheck: false,
-                thursdayCheck: false,
-                fridayCheck: false,
-                saturdayCheck: false,
-                sundayCheck: false
+            this._setWeekData([
+                {
+                    label: "Maandag",
+                    checked: false,
+                    
+                },
+                {
+                    label: "Dinsdag",
+                    checked: false
+                },
+                {
+                    label: "Woensdag",
+                    checked: false
+                },
+                {
+                    label: "Donderdag",
+                    checked: false
+                },
+                {
+                    label: "Vrijdag",
+                    checked: false
+                },
+                {
+                    label: "Zaterdag",
+                    checked: false
+                },
+                {
+                    label: "Zondag",
+                    checked: false
+                },
+            ]);
                 
-            })
+                
+            
         }
 
         private _getDayOfMonth() {
-            if (this.cronData.isMaandelijks) {
-                return this.cronData.dayOfMonth
+            if (this.isMaandelijks) {
+                return this.dayOfMonth
             }
             else {
                 return "*";
             }
         }
 
-        private _submitFunction(): void {
-            this._createCron(this.cronData.minute, this.cronData.hour, this.cronData.dayOfMonth, this.cronData.month);
-            console.log(this.cron);
-        }
-
         private _setDagelijks() {
-            this.cronData.isDagelijks = true;
-            this.cronData.isWekelijks = false;
-            this.cronData.isMaandelijks = false;
-            this.notifyPath("cronData.isDagelijks", this.cronData.isDagelijks);
-            this.notifyPath("cronData.isWekelijks", this.cronData.isWekelijks);
-            this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
+            this.isDagelijks = true;
+            this.isWekelijks = false;
+            this.isMaandelijks = false;
+            this.notifyPath("isDagelijks", this.isDagelijks);
+            this.notifyPath("isWekelijks", this.isWekelijks);
+            this.notifyPath("isMaandelijks", this.isMaandelijks);
         }
         private _setWekelijks() {
-            this.cronData.isDagelijks = false;
-            this.cronData.isWekelijks = true;
-            this.cronData.isMaandelijks = false;
-            this.notifyPath("cronData.isDagelijks", this.cronData.isDagelijks);
-            this.notifyPath("cronData.isWekelijks", this.cronData.isWekelijks);
-            this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
+            this.isDagelijks = false;
+            this.isWekelijks = true;
+            this.isMaandelijks = false;
+            this.notifyPath("isDagelijks", this.isDagelijks);
+            this.notifyPath("isWekelijks", this.isWekelijks);
+            this.notifyPath("isMaandelijks", this.isMaandelijks);
         }
         private _setMaandelijks() {
-            this.cronData.isDagelijks = false;
-            this.cronData.isWekelijks = false;
-            this.cronData.isMaandelijks = true;
-            this.notifyPath("cronData.isDagelijks", this.cronData.isDagelijks);
-            this.notifyPath("cronData.isWekelijks", this.cronData.isWekelijks);
-            this.notifyPath("cronData.isMaandelijks", this.cronData.isMaandelijks);
+            this.isDagelijks = false;
+            this.isWekelijks = false;
+            this.isMaandelijks = true;
+            this.notifyPath("isDagelijks", this.isDagelijks);
+            this.notifyPath("isWekelijks", this.isWekelijks);
+            this.notifyPath("isMaandelijks", this.isMaandelijks);
         }
 
         private _intervalCheck(leapDayCheck) {
-            if (this.cronData.isDagelijks) {
+            if (this.isDagelijks) {
 
                 if (leapDayCheck) {
-                    return ("/" + this.cronData.leapDays);
+                    return ("/" + this.leapDays);
                 }
                 else {
                     return "";
@@ -175,22 +197,19 @@ namespace VidyanoCrontab.WebComponents {
             
         }
 
-        
-        
         private _checkWeekDays() {
-
-            if (this.cronData.isDagelijks) {
-                if (this.cronData.weekDaysCheck) {
+            if (this.isDagelijks) {
+                if (this.weekDaysCheck) {
                     return "1-5";
                 }
                 return "*";
             }
-            else if (this.cronData.isWekelijks) {
+            else if (this.isWekelijks) {
                 
                 var temp: string;
                 temp = "";
-                this.weekArray.forEach(function (day, i) {
-                    if (day) {
+                this.weekData.forEach(function (day, i) {
+                    if (day.checked) {
                         temp = temp + (i + 1).toString() + ","
                     }
                 })
@@ -205,27 +224,12 @@ namespace VidyanoCrontab.WebComponents {
                 return "*";
             }
         }
-    }
 
-    export interface ICronData {
-        isDagelijks: boolean;
-        isWekelijks: boolean;
-        isMaandelijks: boolean;
-        seconds: string;
-        minute: string;
-        hour: string,
-        dayOfMonth: string,
-        month: string,
-        dayOfWeek: string,
-        leapDaysCheck: boolean,
-        weekDaysCheck: boolean,
-        leapDays: string,
-        mondayCheck: boolean,
-        tuesdayCheck: boolean,
-        wednessdayCheck: boolean,
-        thursdayCheck: boolean,
-        fridayCheck: boolean,
-        saturdayCheck: boolean,
-        sundayCheck: boolean
+    }    
+
+    export interface IWeekDay {
+        label: string;
+        checked: boolean;
     }
+    
 }
