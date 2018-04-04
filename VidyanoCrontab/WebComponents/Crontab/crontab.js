@@ -8,6 +8,8 @@ var VidyanoCrontab;
             function Crontab() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
+            Crontab.prototype._testFunction = function () {
+            };
             Crontab.prototype._createCron = function () {
                 return this.seconds + " " + this.minute + " " + this.hour + " " + this._getDayOfMonth() + this._intervalCheck(this.leapDaysCheck) + " " + this.month + " " + this._checkWeekDays();
             };
@@ -32,6 +34,40 @@ var VidyanoCrontab;
                 this.notifyPath("weekData.5.*", this.weekData[5].checked);
                 this.notifyPath("weekData.6.*", this.weekData[6].checked);
             };
+            Crontab.prototype._setInitialValues = function () {
+                var splitCron = this.initialCron.split(" ");
+                this.minute = splitCron[1];
+                this.hour = splitCron[2];
+                var dayOfMonthTest = splitCron[3].split("/");
+                if (dayOfMonthTest.length > 1) {
+                    this.dayOfMonth = dayOfMonthTest[0];
+                    this.leapDays = dayOfMonthTest[1];
+                    this.leapDaysCheck = true;
+                }
+                else {
+                    this.dayOfMonth = splitCron[3];
+                }
+                if (splitCron[5] == "1-5") {
+                    this.weekDaysCheck = true;
+                }
+                var range = splitCron[5].split("-");
+                var list = splitCron[5].split(",");
+                if (range.length > list.length) {
+                    for (var i = Number(range[0]) - 1; i < Number(range[1]); i++) {
+                        this.weekData[i].checked = true;
+                    }
+                }
+                else if (list.length > range.length) {
+                    for (var i = 0; i < list.length; i++) {
+                        var index = Number(list[i]) - 1;
+                        this.weekData[index].checked = true;
+                    }
+                }
+                else if (splitCron[5] != "*") {
+                    var day = Number(splitCron[5]) - 1;
+                    this.weekData[day].checked = true;
+                }
+            };
             Crontab.prototype.attached = function () {
                 return __awaiter(this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
@@ -39,7 +75,7 @@ var VidyanoCrontab;
                         this._setWeekData([
                             {
                                 label: "Maandag",
-                                checked: true,
+                                checked: false,
                             },
                             {
                                 label: "Dinsdag",
@@ -66,6 +102,7 @@ var VidyanoCrontab;
                                 checked: false
                             },
                         ]);
+                        this._setInitialValues();
                         return [2 /*return*/];
                     });
                 });
@@ -82,22 +119,21 @@ var VidyanoCrontab;
                 this.isDagelijks = true;
                 this.isWekelijks = false;
                 this.isMaandelijks = false;
-                this.notifyPath("isDagelijks", this.isDagelijks);
-                this.notifyPath("isWekelijks", this.isWekelijks);
-                this.notifyPath("isMaandelijks", this.isMaandelijks);
+                this._notifyMode();
             };
             Crontab.prototype._setWekelijks = function () {
                 this.isDagelijks = false;
                 this.isWekelijks = true;
                 this.isMaandelijks = false;
-                this.notifyPath("isDagelijks", this.isDagelijks);
-                this.notifyPath("isWekelijks", this.isWekelijks);
-                this.notifyPath("isMaandelijks", this.isMaandelijks);
+                this._notifyMode();
             };
             Crontab.prototype._setMaandelijks = function () {
                 this.isDagelijks = false;
                 this.isWekelijks = false;
                 this.isMaandelijks = true;
+                this._notifyMode();
+            };
+            Crontab.prototype._notifyMode = function () {
                 this.notifyPath("isDagelijks", this.isDagelijks);
                 this.notifyPath("isWekelijks", this.isWekelijks);
                 this.notifyPath("isMaandelijks", this.isMaandelijks);
@@ -146,7 +182,6 @@ var VidyanoCrontab;
                     properties: {
                         cron: {
                             type: String,
-                            //value: "0 10 7 * * 1, 2, 7"
                             computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
                         },
                         seconds: {
@@ -200,6 +235,10 @@ var VidyanoCrontab;
                         weekData: {
                             type: Array,
                             readOnly: true,
+                        },
+                        initialCron: {
+                            type: String,
+                            value: "0 10 7 5/15 * 1-5"
                         }
                     },
                 }, "vc")

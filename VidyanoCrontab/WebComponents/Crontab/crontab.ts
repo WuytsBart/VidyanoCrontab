@@ -5,7 +5,6 @@ namespace VidyanoCrontab.WebComponents {
 
             cron: {
                 type: String,
-                //value: "0 10 7 * * 1, 2, 7"
                 computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
             },                      
             seconds: {
@@ -60,7 +59,11 @@ namespace VidyanoCrontab.WebComponents {
                 type: Array,
                 readOnly: true,
 
-            }            
+            },
+            initialCron: {
+                type: String,
+                value: "0 10 7 5/15 * 1-5"
+            }
                         
         },
 
@@ -80,6 +83,11 @@ namespace VidyanoCrontab.WebComponents {
         leapDaysCheck: boolean;
         weekDaysCheck: boolean;
         leapDays: string;
+        initialCron: string;
+
+        private _testFunction() {
+            
+        }
 
         private _createCron() {
             return `${this.seconds} ${this.minute} ${this.hour} ${this._getDayOfMonth()}${this._intervalCheck(this.leapDaysCheck)} ${this.month} ${this._checkWeekDays()}`;
@@ -109,12 +117,48 @@ namespace VidyanoCrontab.WebComponents {
             this.notifyPath("weekData.6.*", this.weekData[6].checked)
         }
 
+        private _setInitialValues() {
+            var splitCron = this.initialCron.split(" ");
+            this.minute = splitCron[1];
+            this.hour = splitCron[2];
+            var dayOfMonthTest = splitCron[3].split("/")
+            if (dayOfMonthTest.length > 1) {
+                this.dayOfMonth = dayOfMonthTest[0];
+                this.leapDays = dayOfMonthTest[1];
+                this.leapDaysCheck = true;
+            }
+            else {
+                this.dayOfMonth = splitCron[3];
+            }
+            if (splitCron[5] == "1-5") {
+                this.weekDaysCheck = true;
+            }
+            var range = splitCron[5].split("-");
+            var list = splitCron[5].split(",");
+            if (range.length > list.length) {
+                for (var i = Number(range[0]) - 1; i < Number(range[1]); i++) {
+                    this.weekData[i].checked = true;
+                }
+            }
+            else if (list.length > range.length) {
+                for (var i = 0; i < list.length; i++) {
+                    var index = Number(list[i]) - 1;
+                    this.weekData[index].checked = true;
+                }
+            }
+            else if (splitCron[5] != "*") {
+                var day = Number(splitCron[5]) -1;
+                this.weekData[day].checked = true;
+
+            }
+        }
+
         async attached() {
             super.attached();
             this._setWeekData([
                 {
                     label: "Maandag",
-                    checked: true,
+                    checked: false,
                     
                 },
                 {
@@ -142,9 +186,7 @@ namespace VidyanoCrontab.WebComponents {
                     checked: false
                 },
             ]);
-                
-                
-            
+            this._setInitialValues();
         }
 
         private _getDayOfMonth() {
@@ -160,22 +202,22 @@ namespace VidyanoCrontab.WebComponents {
             this.isDagelijks = true;
             this.isWekelijks = false;
             this.isMaandelijks = false;
-            this.notifyPath("isDagelijks", this.isDagelijks);
-            this.notifyPath("isWekelijks", this.isWekelijks);
-            this.notifyPath("isMaandelijks", this.isMaandelijks);
+            this._notifyMode();
         }
         private _setWekelijks() {
             this.isDagelijks = false;
             this.isWekelijks = true;
             this.isMaandelijks = false;
-            this.notifyPath("isDagelijks", this.isDagelijks);
-            this.notifyPath("isWekelijks", this.isWekelijks);
-            this.notifyPath("isMaandelijks", this.isMaandelijks);
+            this._notifyMode();
         }
         private _setMaandelijks() {
             this.isDagelijks = false;
             this.isWekelijks = false;
             this.isMaandelijks = true;
+            this._notifyMode();
+        }
+
+        private _notifyMode() {
             this.notifyPath("isDagelijks", this.isDagelijks);
             this.notifyPath("isWekelijks", this.isWekelijks);
             this.notifyPath("isMaandelijks", this.isMaandelijks);
