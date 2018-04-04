@@ -7,7 +7,6 @@
             <div class="horizontal layout center-justified card-container">
                 <div class="vertical layout center-justified widthFix" desktop="6" tablet="4" mobile="4">
                     <h2>Type terugkeerpatroon</h2>
-                    <div>[[cron]]</div>
                     <vi-checkbox class="patternCheck" label="dagelijks" on-tap="_setDagelijks" checked="{{isDagelijks}}">Dagelijks</vi-checkbox>
                     <vi-checkbox class="patternCheck" label="wekelijks" on-tap="_setWekelijks" checked="{{isWekelijks}}">Wekelijks</vi-checkbox>
                     <vi-checkbox class="patternCheck" label="maandelijks" on-tap="_setMaandelijks" checked="{{isMaandelijks}}">Maandelijks</vi-checkbox>
@@ -17,6 +16,9 @@
                             <h2>Wanneer wilt u het event starten?</h2>
                             <p>Om <input type="number" name="beginuur" min="0" max="23" value="{{hour::input}}" /> uur en <input type="number" name="beginminuten" min="0" max="59" value="{{minute::input}}" /> minuten </p>
                             <h2>Terugkeerpatroon</h2>
+                            <template is="dom-if" if="[[dailyWarning]]" >
+                                <p class="warning">Er mag slechts één terugkeerpatroon aangeduid zijn</p>
+                            </template>
                             <div class="labelFix"> <vi-checkbox checked="{{leapDaysCheck}}" on-tap="_leap" class="checkBoxFix"></vi-checkbox> <label>Elke <input type="number" name="LeapDays" value="{{leapDays::input}}" min="1" max="31" /> dag(en)</label></div>
                             <vi-checkbox label="Enkel weekdagen" checked="{{weekDaysCheck}}" on-tap="_week"></vi-checkbox>
                         </div>

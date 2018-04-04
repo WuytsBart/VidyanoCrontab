@@ -48,3 +48,6 @@
   :host .labelFix label {
     margin-left: .5%; }
 
+:host .warning {
+  color: var(--theme-color-error); }
+

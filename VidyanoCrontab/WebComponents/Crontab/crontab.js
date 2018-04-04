@@ -67,6 +67,9 @@ var VidyanoCrontab;
                     var day = Number(splitCron[5]) - 1;
                     this.weekData[day].checked = true;
                 }
+                if (this.leapDaysCheck && this.weekDaysCheck) {
+                    this.dailyWarning = true;
+                }
             };
             Crontab.prototype.attached = function () {
                 return __awaiter(this, void 0, void 0, function () {
@@ -238,7 +241,11 @@ var VidyanoCrontab;
                         },
                         initialCron: {
                             type: String,
-                            value: "0 10 7 5/15 * 1-5"
+                            value: "0 10 10 * * 1-5"
+                        },
+                        dailyWarning: {
+                            type: Boolean,
+                            value: false
                         }
                     },
                 }, "vc")

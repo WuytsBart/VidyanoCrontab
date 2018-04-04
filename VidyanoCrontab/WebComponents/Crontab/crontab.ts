@@ -5,6 +5,7 @@ namespace VidyanoCrontab.WebComponents {
 
             cron: {
                 type: String,
+                
                 computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
             },                      
             seconds: {
@@ -62,7 +63,11 @@ namespace VidyanoCrontab.WebComponents {
             },
             initialCron: {
                 type: String,
-                value: "0 10 7 5/15 * 1-5"
+                value: "0 10 10 * * 1-5"
+            },
+            dailyWarning: {
+                type: Boolean,
+                value: false
             }
                         
         },
@@ -84,6 +89,7 @@ namespace VidyanoCrontab.WebComponents {
         weekDaysCheck: boolean;
         leapDays: string;
         initialCron: string;
+        dailyWarning: boolean;
 
         private _testFunction() {
             
@@ -150,6 +156,10 @@ namespace VidyanoCrontab.WebComponents {
                 var day = Number(splitCron[5]) -1;
                 this.weekData[day].checked = true;
 
+            }
+
+            if (this.leapDaysCheck && this.weekDaysCheck) {
+                this.dailyWarning = true;
             }
         }
 
