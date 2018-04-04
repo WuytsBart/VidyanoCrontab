@@ -5,9 +5,6 @@
   height: 100%;
   padding-left: 2%; }
 
-:host .test {
-  border: 1px solid #ff0000; }
-
 :host .widthFix {
   width: 900px; }
 

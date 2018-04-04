@@ -5,40 +5,42 @@ namespace VidyanoCrontab.WebComponents {
 
             cron: {
                 type: String,
-                
-                computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
+                value: "0 10 10 * * 1-5 " 
             },                      
             seconds: {
-                type: String,
+                type: Number,
                 value: "0"
             },
             minute: {
-                type: String,
+                type: Number,
                 value: "*"
             },
             hour: {
-                type: String,
+                type: Number,
                 value: "*"
             },
             month: {
-                type: String,
+                type: Number,
                 value: "*"
             },
             dayOfWeek: {
-                type: String,
+                type: Number,
                 value: "*"
             },
             isDagelijks: {
                 type: Boolean,
-                value: true
+                value: true,
+                notify: true
             },
             isWekelijks: {
                 type: Boolean,
-                value: false
+                value: false,
+                notify: true
             },
             isMaandelijks: {
                 type: Boolean,
-                value: false
+                value: false,
+                notify: true
             },
             weekDaysCheck: {
                 type: Boolean,
@@ -49,54 +51,41 @@ namespace VidyanoCrontab.WebComponents {
                 value: false
             },
             leapDays: {
-                type: String,
+                type: Number,
                 value: "*"
             },
             dayOfMonth: {
-                type: String,
+                type: Number,
                 value: "*"
             },
             weekData: {
                 type: Array,
                 readOnly: true,
-
-            },
-            initialCron: {
-                type: String,
-                value: "0 10 10 * * 1-5"
-            },
-            dailyWarning: {
-                type: Boolean,
-                value: false
             }
-                        
         },
+        observers: [
+            "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
+        ]
 
     }, "vc")
     export class Crontab extends Vidyano.WebComponents.WebComponent {
         readonly weekData: IWeekDay[]; private _setWeekData: (value: IWeekDay[]) => void;
         cron: string;
-        seconds: string;
+        seconds: number;
         isDagelijks: boolean;
         isWekelijks: boolean;
         isMaandelijks: boolean;
-        minute: string;
-        hour: string;
-        dayOfMonth: string;
-        month: string;
-        dayOfWeek: string;
+        minute: number;
+        hour: number;
+        dayOfMonth: number;
+        month: number;
+        dayOfWeek: number;
         leapDaysCheck: boolean;
         weekDaysCheck: boolean;
-        leapDays: string;
-        initialCron: string;
-        dailyWarning: boolean;
-
-        private _testFunction() {
-            
-        }
+        leapDays: number;
 
         private _createCron() {
-            return `${this.seconds} ${this.minute} ${this.hour} ${this._getDayOfMonth()}${this._intervalCheck(this.leapDaysCheck)} ${this.month} ${this._checkWeekDays()}`;
+            this.cron = `${this.seconds} ${this.minute} ${this.hour} ${this._getDayOfMonth()}${this._intervalCheck(this.leapDaysCheck)} ${this.month} ${this._checkWeekDays()}`;
         }
 
         private _leap() {                       
@@ -114,33 +103,33 @@ namespace VidyanoCrontab.WebComponents {
         }
 
         private _notifyWeekDays() {
-            this.notifyPath("weekData.0.*", this.weekData[0].checked)
-            this.notifyPath("weekData.1.*", this.weekData[1].checked)
-            this.notifyPath("weekData.2.*", this.weekData[2].checked)
-            this.notifyPath("weekData.3.*", this.weekData[3].checked)
-            this.notifyPath("weekData.4.*", this.weekData[4].checked)
-            this.notifyPath("weekData.5.*", this.weekData[5].checked)
-            this.notifyPath("weekData.6.*", this.weekData[6].checked)
+            for (var i = 0; i < 7; i++) {
+                this.notifyPath("weekData."+i+".*", this.weekData[i].checked)
+            }
         }
 
         private _setInitialValues() {
-            var splitCron = this.initialCron.split(" ");
-            this.minute = splitCron[1];
-            this.hour = splitCron[2];
+            var splitCron = this.cron.split(" ");
+            this.minute = Number(splitCron[1]);
+            this.hour = Number(splitCron[2]);
             var dayOfMonthTest = splitCron[3].split("/")
+
             if (dayOfMonthTest.length > 1) {
-                this.dayOfMonth = dayOfMonthTest[0];
-                this.leapDays = dayOfMonthTest[1];
+                this.dayOfMonth = Number(dayOfMonthTest[0]);
+                this.leapDays = Number(dayOfMonthTest[1]);
                 this.leapDaysCheck = true;
             }
             else {
-                this.dayOfMonth = splitCron[3];
+                this.dayOfMonth = Number(splitCron[3]);
             }
+
             if (splitCron[5] == "1-5") {
                 this.weekDaysCheck = true;
             }
+
             var range = splitCron[5].split("-");
             var list = splitCron[5].split(",");
+
             if (range.length > list.length) {
                 for (var i = Number(range[0]) - 1; i < Number(range[1]); i++) {
                     this.weekData[i].checked = true;
@@ -156,20 +145,16 @@ namespace VidyanoCrontab.WebComponents {
                 var day = Number(splitCron[5]) -1;
                 this.weekData[day].checked = true;
 
-            }
-
-            if (this.leapDaysCheck && this.weekDaysCheck) {
-                this.dailyWarning = true;
-            }
+            }           
         }
 
         async attached() {
             super.attached();
+
             this._setWeekData([
                 {
                     label: "Maandag",
-                    checked: false,
-                    
+                    checked: false,                    
                 },
                 {
                     label: "Dinsdag",
@@ -212,41 +197,25 @@ namespace VidyanoCrontab.WebComponents {
             this.isDagelijks = true;
             this.isWekelijks = false;
             this.isMaandelijks = false;
-            this._notifyMode();
         }
         private _setWekelijks() {
             this.isDagelijks = false;
             this.isWekelijks = true;
             this.isMaandelijks = false;
-            this._notifyMode();
         }
         private _setMaandelijks() {
             this.isDagelijks = false;
             this.isWekelijks = false;
-            this.isMaandelijks = true;
-            this._notifyMode();
-        }
-
-        private _notifyMode() {
-            this.notifyPath("isDagelijks", this.isDagelijks);
-            this.notifyPath("isWekelijks", this.isWekelijks);
-            this.notifyPath("isMaandelijks", this.isMaandelijks);
+            this.isMaandelijks = true;            
         }
 
         private _intervalCheck(leapDayCheck) {
             if (this.isDagelijks) {
-
                 if (leapDayCheck) {
                     return ("/" + this.leapDays);
                 }
-                else {
-                    return "";
-                }
             }
-                else {
-                    return "";
-                }
-            
+            return "";
         }
 
         private _checkWeekDays() {
@@ -256,8 +225,7 @@ namespace VidyanoCrontab.WebComponents {
                 }
                 return "*";
             }
-            else if (this.isWekelijks) {
-                
+            else if (this.isWekelijks) {               
                 var temp: string;
                 temp = "";
                 this.weekData.forEach(function (day, i) {
@@ -266,8 +234,6 @@ namespace VidyanoCrontab.WebComponents {
                     }
                 })
                 if (temp != "") {
-
-
                     return temp.slice(0, -1);
                 }
                 else { return  "*" }
@@ -276,7 +242,6 @@ namespace VidyanoCrontab.WebComponents {
                 return "*";
             }
         }
-
     }    
 
     export interface IWeekDay {

@@ -8,10 +8,8 @@ var VidyanoCrontab;
             function Crontab() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            Crontab.prototype._testFunction = function () {
-            };
             Crontab.prototype._createCron = function () {
-                return this.seconds + " " + this.minute + " " + this.hour + " " + this._getDayOfMonth() + this._intervalCheck(this.leapDaysCheck) + " " + this.month + " " + this._checkWeekDays();
+                this.cron = this.seconds + " " + this.minute + " " + this.hour + " " + this._getDayOfMonth() + this._intervalCheck(this.leapDaysCheck) + " " + this.month + " " + this._checkWeekDays();
             };
             Crontab.prototype._leap = function () {
                 if (this.leapDaysCheck) {
@@ -26,26 +24,22 @@ var VidyanoCrontab;
                 }
             };
             Crontab.prototype._notifyWeekDays = function () {
-                this.notifyPath("weekData.0.*", this.weekData[0].checked);
-                this.notifyPath("weekData.1.*", this.weekData[1].checked);
-                this.notifyPath("weekData.2.*", this.weekData[2].checked);
-                this.notifyPath("weekData.3.*", this.weekData[3].checked);
-                this.notifyPath("weekData.4.*", this.weekData[4].checked);
-                this.notifyPath("weekData.5.*", this.weekData[5].checked);
-                this.notifyPath("weekData.6.*", this.weekData[6].checked);
+                for (var i = 0; i < 7; i++) {
+                    this.notifyPath("weekData." + i + ".*", this.weekData[i].checked);
+                }
             };
             Crontab.prototype._setInitialValues = function () {
-                var splitCron = this.initialCron.split(" ");
-                this.minute = splitCron[1];
-                this.hour = splitCron[2];
+                var splitCron = this.cron.split(" ");
+                this.minute = Number(splitCron[1]);
+                this.hour = Number(splitCron[2]);
                 var dayOfMonthTest = splitCron[3].split("/");
                 if (dayOfMonthTest.length > 1) {
-                    this.dayOfMonth = dayOfMonthTest[0];
-                    this.leapDays = dayOfMonthTest[1];
+                    this.dayOfMonth = Number(dayOfMonthTest[0]);
+                    this.leapDays = Number(dayOfMonthTest[1]);
                     this.leapDaysCheck = true;
                 }
                 else {
-                    this.dayOfMonth = splitCron[3];
+                    this.dayOfMonth = Number(splitCron[3]);
                 }
                 if (splitCron[5] == "1-5") {
                     this.weekDaysCheck = true;
@@ -66,9 +60,6 @@ var VidyanoCrontab;
                 else if (splitCron[5] != "*") {
                     var day = Number(splitCron[5]) - 1;
                     this.weekData[day].checked = true;
-                }
-                if (this.leapDaysCheck && this.weekDaysCheck) {
-                    this.dailyWarning = true;
                 }
             };
             Crontab.prototype.attached = function () {
@@ -122,37 +113,24 @@ var VidyanoCrontab;
                 this.isDagelijks = true;
                 this.isWekelijks = false;
                 this.isMaandelijks = false;
-                this._notifyMode();
             };
             Crontab.prototype._setWekelijks = function () {
                 this.isDagelijks = false;
                 this.isWekelijks = true;
                 this.isMaandelijks = false;
-                this._notifyMode();
             };
             Crontab.prototype._setMaandelijks = function () {
                 this.isDagelijks = false;
                 this.isWekelijks = false;
                 this.isMaandelijks = true;
-                this._notifyMode();
-            };
-            Crontab.prototype._notifyMode = function () {
-                this.notifyPath("isDagelijks", this.isDagelijks);
-                this.notifyPath("isWekelijks", this.isWekelijks);
-                this.notifyPath("isMaandelijks", this.isMaandelijks);
             };
             Crontab.prototype._intervalCheck = function (leapDayCheck) {
                 if (this.isDagelijks) {
                     if (leapDayCheck) {
                         return ("/" + this.leapDays);
                     }
-                    else {
-                        return "";
-                    }
                 }
-                else {
-                    return "";
-                }
+                return "";
             };
             Crontab.prototype._checkWeekDays = function () {
                 if (this.isDagelijks) {
@@ -185,39 +163,42 @@ var VidyanoCrontab;
                     properties: {
                         cron: {
                             type: String,
-                            computed: "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
+                            value: "0 10 10 * * 1-5 "
                         },
                         seconds: {
-                            type: String,
+                            type: Number,
                             value: "0"
                         },
                         minute: {
-                            type: String,
+                            type: Number,
                             value: "*"
                         },
                         hour: {
-                            type: String,
+                            type: Number,
                             value: "*"
                         },
                         month: {
-                            type: String,
+                            type: Number,
                             value: "*"
                         },
                         dayOfWeek: {
-                            type: String,
+                            type: Number,
                             value: "*"
                         },
                         isDagelijks: {
                             type: Boolean,
-                            value: true
+                            value: true,
+                            notify: true
                         },
                         isWekelijks: {
                             type: Boolean,
-                            value: false
+                            value: false,
+                            notify: true
                         },
                         isMaandelijks: {
                             type: Boolean,
-                            value: false
+                            value: false,
+                            notify: true
                         },
                         weekDaysCheck: {
                             type: Boolean,
@@ -228,26 +209,21 @@ var VidyanoCrontab;
                             value: false
                         },
                         leapDays: {
-                            type: String,
+                            type: Number,
                             value: "*"
                         },
                         dayOfMonth: {
-                            type: String,
+                            type: Number,
                             value: "*"
                         },
                         weekData: {
                             type: Array,
                             readOnly: true,
-                        },
-                        initialCron: {
-                            type: String,
-                            value: "0 10 10 * * 1-5"
-                        },
-                        dailyWarning: {
-                            type: Boolean,
-                            value: false
                         }
                     },
+                    observers: [
+                        "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
+                    ]
                 }, "vc")
             ], Crontab);
             return Crontab;
