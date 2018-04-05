@@ -14,13 +14,11 @@ var VidyanoCrontab;
             Crontab.prototype._leap = function () {
                 if (this.leapDaysCheck) {
                     this.weekDaysCheck = false;
-                    this.notifyPath("weekDaysCheck", this.weekDaysCheck);
                 }
             };
             Crontab.prototype._week = function () {
                 if (this.weekDaysCheck) {
                     this.leapDaysCheck = false;
-                    this.notifyPath("leapDaysCheck", this.leapDaysCheck);
                 }
             };
             Crontab.prototype._notifyWeekDays = function () {
@@ -33,6 +31,8 @@ var VidyanoCrontab;
                 this.minute = Number(splitCron[1]);
                 this.hour = Number(splitCron[2]);
                 var dayOfMonthTest = splitCron[3].split("/");
+                var range = splitCron[5].split("-");
+                var list = splitCron[5].split(",");
                 if (dayOfMonthTest.length > 1) {
                     this.dayOfMonth = Number(dayOfMonthTest[0]);
                     this.leapDays = Number(dayOfMonthTest[1]);
@@ -44,8 +44,6 @@ var VidyanoCrontab;
                 if (splitCron[5] == "1-5") {
                     this.weekDaysCheck = true;
                 }
-                var range = splitCron[5].split("-");
-                var list = splitCron[5].split(",");
                 if (range.length > list.length) {
                     for (var i = Number(range[0]) - 1; i < Number(range[1]); i++) {
                         this.weekData[i].checked = true;
@@ -163,26 +161,24 @@ var VidyanoCrontab;
                     properties: {
                         cron: {
                             type: String,
-                            value: "0 10 10 * * 1-5 "
+                            value: "0 10 10 * * 1-5"
                         },
                         seconds: {
                             type: Number,
-                            value: "0"
+                            value: 0
                         },
                         minute: {
                             type: Number,
-                            value: "*"
                         },
                         hour: {
                             type: Number,
-                            value: "*"
                         },
                         month: {
-                            type: Number,
+                            type: String,
                             value: "*"
                         },
                         dayOfWeek: {
-                            type: Number,
+                            type: String,
                             value: "*"
                         },
                         isDagelijks: {
@@ -202,7 +198,7 @@ var VidyanoCrontab;
                         },
                         weekDaysCheck: {
                             type: Boolean,
-                            value: false
+                            value: false,
                         },
                         leapDaysCheck: {
                             type: Boolean,
@@ -213,7 +209,7 @@ var VidyanoCrontab;
                             value: "*"
                         },
                         dayOfMonth: {
-                            type: Number,
+                            type: String,
                             value: "*"
                         },
                         weekData: {

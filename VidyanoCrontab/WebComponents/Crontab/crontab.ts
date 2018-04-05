@@ -5,26 +5,24 @@ namespace VidyanoCrontab.WebComponents {
 
             cron: {
                 type: String,
-                value: "0 10 10 * * 1-5 " 
+                value: "0 10 10 * * 1-5" 
             },                      
             seconds: {
                 type: Number,
-                value: "0"
+                value: 0
             },
             minute: {
-                type: Number,
-                value: "*"
+                type: Number,                
             },
             hour: {
-                type: Number,
-                value: "*"
+                type: Number,                
             },
             month: {
-                type: Number,
+                type: String,
                 value: "*"
             },
             dayOfWeek: {
-                type: Number,
+                type: String,
                 value: "*"
             },
             isDagelijks: {
@@ -44,7 +42,7 @@ namespace VidyanoCrontab.WebComponents {
             },
             weekDaysCheck: {
                 type: Boolean,
-                value: false
+                value: false,                
             },
             leapDaysCheck: {
                 type: Boolean,
@@ -55,7 +53,7 @@ namespace VidyanoCrontab.WebComponents {
                 value: "*"
             },
             dayOfMonth: {
-                type: Number,
+                type: String,
                 value: "*"
             },
             weekData: {
@@ -90,15 +88,13 @@ namespace VidyanoCrontab.WebComponents {
 
         private _leap() {                       
             if (this.leapDaysCheck) {
-                this.weekDaysCheck = false;
-                this.notifyPath("weekDaysCheck", this.weekDaysCheck);
+                this.weekDaysCheck = false;               
             }
         }
 
         private _week() {
             if (this.weekDaysCheck) {
                 this.leapDaysCheck = false;
-                this.notifyPath("leapDaysCheck", this.leapDaysCheck);
             }
         }
 
@@ -113,6 +109,8 @@ namespace VidyanoCrontab.WebComponents {
             this.minute = Number(splitCron[1]);
             this.hour = Number(splitCron[2]);
             var dayOfMonthTest = splitCron[3].split("/")
+            var range = splitCron[5].split("-");
+            var list = splitCron[5].split(",");
 
             if (dayOfMonthTest.length > 1) {
                 this.dayOfMonth = Number(dayOfMonthTest[0]);
@@ -126,10 +124,7 @@ namespace VidyanoCrontab.WebComponents {
             if (splitCron[5] == "1-5") {
                 this.weekDaysCheck = true;
             }
-
-            var range = splitCron[5].split("-");
-            var list = splitCron[5].split(",");
-
+            
             if (range.length > list.length) {
                 for (var i = Number(range[0]) - 1; i < Number(range[1]); i++) {
                     this.weekData[i].checked = true;
@@ -145,12 +140,11 @@ namespace VidyanoCrontab.WebComponents {
                 var day = Number(splitCron[5]) -1;
                 this.weekData[day].checked = true;
 
-            }           
+            }
         }
 
         async attached() {
             super.attached();
-
             this._setWeekData([
                 {
                     label: "Maandag",
@@ -182,6 +176,7 @@ namespace VidyanoCrontab.WebComponents {
                 },
             ]);
             this._setInitialValues();
+            
         }
 
         private _getDayOfMonth() {
