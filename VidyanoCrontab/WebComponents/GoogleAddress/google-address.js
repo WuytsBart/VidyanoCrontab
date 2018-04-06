@@ -10,12 +10,10 @@ var VidyanoCrontab;
             }
             GoogleAddress.prototype._testFunction = function () {
                 console.log(this.address);
-                this._setAddress();
-                console.log(this.address);
             };
             GoogleAddress.prototype._initAutocomplete = function () {
                 var autocomplete = new google.maps.places.Autocomplete(document.getElementById('autoComplete'));
-                google.maps.event.addListener(autocomplete, 'place_changed', function () { });
+                autocomplete.addListener('place_changed', this._setAddress.bind(this));
             };
             GoogleAddress.prototype._setAddress = function () {
                 this.address = document.getElementById('autoComplete').value;

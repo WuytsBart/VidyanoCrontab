@@ -5,24 +5,20 @@ namespace VidyanoCrontab.WebComponents {
             address: {
                 type: String,                
             }
-
         }
     }, "vc")
     export class GoogleAddress extends Vidyano.WebComponents.WebComponent {
         address: string;
         autocomplete: any;
-        test: string;
+       
 
         private _testFunction() {
-            console.log(this.address);
-            this._setAddress();
-            console.log(this.address);            
+            console.log(this.address);                
         }
 
-        private _initAutocomplete() {
-            
+        private _initAutocomplete() {            
             var autocomplete = new google.maps.places.Autocomplete(document.getElementById('autoComplete'));
-            google.maps.event.addListener(autocomplete, 'place_changed', function () );
+            autocomplete.addListener('place_changed', this._setAddress.bind(this));
         }
 
         private _setAddress() {
