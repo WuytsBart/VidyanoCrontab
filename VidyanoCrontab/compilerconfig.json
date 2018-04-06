@@ -2,5 +2,9 @@
   {
     "outputFile": "WebComponents/Crontab/crontab.css",
     "inputFile": "WebComponents/Crontab/crontab.scss"
+  },
+  {
+    "outputFile": "WebComponents/GoogleAddress/google-address.css",
+    "inputFile": "WebComponents/GoogleAddress/google-address.scss"
   }
 ]

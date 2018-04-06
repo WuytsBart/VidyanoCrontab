@@ -124,6 +124,13 @@
     <Content Include="WebComponents\Crontab\crontab.js">
       <DependentUpon>crontab.ts</DependentUpon>
     </Content>
+    <Content Include="WebComponents\GoogleAddress\google-address.css">
+      <DependentUpon>google-address.scss</DependentUpon>
+    </Content>
+    <Content Include="WebComponents\GoogleAddress\google-address.html" />
+    <Content Include="WebComponents\GoogleAddress\google-address.js">
+      <DependentUpon>google-address.ts</DependentUpon>
+    </Content>
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -139,6 +146,7 @@
       <DependentUpon>crontab.css</DependentUpon>
     </Content>
     <Content Include="WebComponents\Crontab\crontab.scss" />
+    <Content Include="WebComponents\GoogleAddress\google-address.scss" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -147,6 +155,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\vidyano\vidyano.d.ts" />
     <TypeScriptCompile Include="WebComponents\Crontab\crontab.ts" />
+    <TypeScriptCompile Include="WebComponents\GoogleAddress\google-address.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

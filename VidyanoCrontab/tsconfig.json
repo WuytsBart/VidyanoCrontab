@@ -12,6 +12,7 @@
   "compileOnSave": true,
   "files": [
     "Scripts/typings/vidyano/vidyano.d.ts",
-    "WebComponents/Crontab/crontab.ts"
+    "WebComponents/Crontab/crontab.ts",
+    "WebComponents/GoogleAddress/google-address.ts"
   ]
 }

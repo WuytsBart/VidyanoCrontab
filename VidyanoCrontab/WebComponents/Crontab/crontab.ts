@@ -75,9 +75,9 @@ namespace VidyanoCrontab.WebComponents {
         isMaandelijks: boolean;
         minute: number;
         hour: number;
-        dayOfMonth: number;
-        month: number;
-        dayOfWeek: number;
+        dayOfMonth: string;
+        month: string;
+        dayOfWeek: string;
         leapDaysCheck: boolean;
         weekDaysCheck: boolean;
         leapDays: number;
@@ -113,12 +113,12 @@ namespace VidyanoCrontab.WebComponents {
             var list = splitCron[5].split(",");
 
             if (dayOfMonthTest.length > 1) {
-                this.dayOfMonth = Number(dayOfMonthTest[0]);
+                this.dayOfMonth = dayOfMonthTest[0];
                 this.leapDays = Number(dayOfMonthTest[1]);
                 this.leapDaysCheck = true;
             }
             else {
-                this.dayOfMonth = Number(splitCron[3]);
+                this.dayOfMonth = splitCron[3];
             }
 
             if (splitCron[5] == "1-5") {
@@ -139,7 +139,6 @@ namespace VidyanoCrontab.WebComponents {
             else if (splitCron[5] != "*") {
                 var day = Number(splitCron[5]) -1;
                 this.weekData[day].checked = true;
-
             }
         }
 

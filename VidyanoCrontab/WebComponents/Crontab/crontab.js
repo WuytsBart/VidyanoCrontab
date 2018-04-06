@@ -34,12 +34,12 @@ var VidyanoCrontab;
                 var range = splitCron[5].split("-");
                 var list = splitCron[5].split(",");
                 if (dayOfMonthTest.length > 1) {
-                    this.dayOfMonth = Number(dayOfMonthTest[0]);
+                    this.dayOfMonth = dayOfMonthTest[0];
                     this.leapDays = Number(dayOfMonthTest[1]);
                     this.leapDaysCheck = true;
                 }
                 else {
-                    this.dayOfMonth = Number(splitCron[3]);
+                    this.dayOfMonth = splitCron[3];
                 }
                 if (splitCron[5] == "1-5") {
                     this.weekDaysCheck = true;
