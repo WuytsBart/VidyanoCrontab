@@ -62,7 +62,11 @@ namespace VidyanoCrontab.WebComponents {
             }
         },
         observers: [
-            "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)"
+            "_createCron(minute, hour, dayOfMonth, month, leapDays, weekDaysCheck, leapDaysCheck, isDagelijks, isWekelijks, isMaandelijks, weekData.*)",
+            "_checkHourInput(hour)",
+            "_checkMinuteInput(minute)",
+            "_checkLeapDayInput(leapDays)",
+            "_checkDayOfMonthInput(dayOfMonth)"
         ]
 
     }, "vc")
@@ -84,6 +88,42 @@ namespace VidyanoCrontab.WebComponents {
 
         private _createCron() {
             this.cron = `${this.seconds} ${this.minute} ${this.hour} ${this._getDayOfMonth()}${this._intervalCheck(this.leapDaysCheck)} ${this.month} ${this._checkWeekDays()}`;
+        }
+
+        private _checkHourInput() {
+            if (this.hour > 23) {
+                this.hour = 23;
+            }
+            if (this.hour < 0) {
+                this.hour = 0;
+            }
+        }
+
+        private _checkMinuteInput() {
+            if (this.minute > 59) {
+                this.minute = 59;
+            }
+            if (this.minute < 0) {
+                this.minute = 0;
+            }
+        }
+
+        private _checkLeapDayInput() {
+            if (this.leapDays > 31) {
+                this.leapDays = 31;
+            }
+            if (this.leapDays < 1) {
+                this.leapDays = 1;
+            }
+        }
+
+        private _checkDayOfMonthInput() {
+            if (Number(this.dayOfMonth) > 31) {
+                this.dayOfMonth = "31";
+            }
+            if (Number(this.dayOfMonth) < 1) {
+                this.dayOfMonth = "1";
+            }
         }
 
         private _leap() {                       

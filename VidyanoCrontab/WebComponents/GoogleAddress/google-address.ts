@@ -11,7 +11,6 @@ namespace VidyanoCrontab.WebComponents {
         address: string;
         autocomplete: any;
        
-
         private _testFunction() {
             console.log(this.address);                
         }
@@ -22,7 +21,7 @@ namespace VidyanoCrontab.WebComponents {
         }
 
         private _setAddress() {
-            this.address = document.getElementById('autoComplete').value;
+            this.address = (<any>document.getElementById('autoComplete')).value;
         }
 
         async attached() {

@@ -1,23 +1,11 @@
 :host {
-    * {
-        font-size: 20px;
-    }
-
     .card-container {
         height: 100%;
         padding-left: 2%;
     }
 
-    .widthFix {
-        width: 900px;
-    }
-
     vi-checkbox {
         margin-left: 4%;
-    }
-
-    .patternCheck {
-        width: 200px;
     }
 
     h2 {
@@ -31,7 +19,6 @@
     p {
         margin-left: 2%;
         padding-left: 2%;
-        font-size: 20px;
     }
 
     .checkBoxes {
@@ -41,7 +28,6 @@
 
     .checkBoxes paper-checkbox {
         padding-top: 1%;
-        width: 150px;
     }
 
     .checkBoxFix {
@@ -51,11 +37,9 @@
 
     .labelFix {
         display: flex;
-        height: 50px;
-        align-items: center;
-       
+        align-items: center;       
         label {
-            margin-left: .5%;
+            margin-left: 4.5%;
         }
     }
 

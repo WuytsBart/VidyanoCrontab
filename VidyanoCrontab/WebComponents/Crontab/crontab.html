@@ -5,12 +5,11 @@
         <link href="../../libs/paper-radio-group/paper-radio-group.html" rel="import" />
         <link href="../../libs/paper-checkbox/paper-checkbox.html" rel="import" />
             <div class="horizontal layout center-justified card-container">
-                <div class="vertical layout center-justified widthFix" desktop="6" tablet="4" mobile="4">
-                    <h2>Type terugkeerpatroon</h2>
-                    <div>[[cron]]</div>
-                    <vi-checkbox class="patternCheck" label="dagelijks" on-tap="_setDagelijks" checked="{{isDagelijks}}">Dagelijks</vi-checkbox>
-                    <vi-checkbox class="patternCheck" label="wekelijks" on-tap="_setWekelijks" checked="{{isWekelijks}}">Wekelijks</vi-checkbox>
-                    <vi-checkbox class="patternCheck" label="maandelijks" on-tap="_setMaandelijks" checked="{{isMaandelijks}}">Maandelijks</vi-checkbox>
+                <div class="vertical layout center-justified" desktop="6" tablet="4" mobile="4">
+                    <h2>Type terugkeerpatroon</h2>                    
+                    <vi-checkbox  label="dagelijks" on-tap="_setDagelijks" checked="{{isDagelijks}}">Dagelijks</vi-checkbox>
+                    <vi-checkbox  label="wekelijks" on-tap="_setWekelijks" checked="{{isWekelijks}}">Wekelijks</vi-checkbox>
+                    <vi-checkbox  label="maandelijks" on-tap="_setMaandelijks" checked="{{isMaandelijks}}">Maandelijks</vi-checkbox>
                     <template is="dom-if" if="[[isDagelijks]]">
                         <div>
                             <h2>Wanneer wilt u het event starten?</h2>

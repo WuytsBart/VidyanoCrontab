@@ -13,6 +13,9 @@
   "files": [
     "Scripts/typings/vidyano/vidyano.d.ts",
     "WebComponents/Crontab/crontab.ts",
-    "WebComponents/GoogleAddress/google-address.ts"
+    "WebComponents/GoogleAddress/google-address.ts",
+    "WebComponents/ImageCarousel/image-carousel.ts",
+    "WebComponents/carousel/carousel.ts",
+    "WebComponents/Carousel/carousel.ts"
   ]
 }

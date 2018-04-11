@@ -1,0 +1,164 @@
+@import "../../libs/layout/_layout.scss";
+
+:host {
+    $transition-duration: 0.8s;
+
+    @include relative();
+
+    #items {
+        overflow: hidden;
+        position: relative;
+        height: 75%;
+        width: 100%;
+
+        &[move-direction="forward"] {
+            .item {
+                left: 100%;
+
+                &.active.move {
+                    left: -100%;
+                }
+            }
+        }
+
+        &[move-direction="back"] {
+            .item {
+                left: -100%;
+
+                &.active.move {
+                    left: 100%;
+                }
+            }
+        }
+
+        .item {
+            top: 0;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            transition: all 0s;
+
+            &.active {
+                left: 0;
+            }
+
+            &.active.move {
+                transition: all $transition-duration;
+            }
+
+            &.next.move {
+                left: 0;
+                transition: all $transition-duration;
+            }
+        }
+    }
+
+    #previews {
+        @include layout-horizontal();
+        @include layout-center-justified();
+        position: absolute;
+        height: 15%;
+        width: 100%;
+        
+        bottom: 10%;
+        transition: all 0s;
+
+        
+
+        .preview {
+            height: 100%;
+            width: 30%;
+            border: 2px solid white;
+            margin: 2px;
+            transition: all $transition-duration;
+            cursor: pointer;
+            bottom: 0;
+
+            &.active {
+                left: 0;
+            }
+
+            &.active.move {
+                transition: all $transition-duration;
+            }
+
+            &.next.move {
+                left: 0;
+                transition: all $transition-duration;
+            }
+        }
+    }
+
+    #indicators {
+        @include layout-horizontal();
+        @include layout-center-justified();
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        padding: 5px 0;
+        background-color: rgba(0, 0, 0, 0.2);
+        transition: all 0s;
+        
+
+        .indicator {
+            height: 10px;
+            width: 10px;
+            border: 2px solid white;
+            margin: 2px;
+            transition: all $transition-duration;
+            cursor: pointer;
+
+            &.active {
+                background-color: white;
+            }
+        }
+    }
+
+    .mover {
+        @include layout();
+        position: absolute;
+        height: 60px;
+        width: 20px;
+        margin: auto 0;
+        background-color: none;
+        top: 0;
+        bottom: 0;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        &#back {
+            left: 0;
+        }
+
+        &#forward {
+            right: 0;
+        }
+
+        svg {
+            @include flex();
+            @include self-center();
+            fill: white;
+        }
+    }
+
+    &[in-transition] {
+        #indicators .indicator {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .mover {
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+
+    &[is-phone], [is-tablet] {
+        .mover {
+            width: 40px;
+        }
+    }
+}

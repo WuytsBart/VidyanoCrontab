@@ -5,6 +5,7 @@
     "layout": "2sky/layout#master",
     "paper-radio-button": "v2.1.0",
     "paper-radio-group": "v2.2.0",
-    "paper-checkbox": "v2.0.2"
+    "paper-checkbox": "v2.0.2",
+    "iron-image": "v2.2.0"
   }
 }

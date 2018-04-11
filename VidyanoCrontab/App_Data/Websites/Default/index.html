@@ -9,16 +9,20 @@
     <link rel="import" href="web2/vidyano.html" />
     <link rel="import" href="web2/vulcanize/WebComponents/Crontab/crontab.html" />
     <link rel="import" href="web2/vulcanize/WebComponents/GoogleAddress/google-address.html" />
-    
+    <link rel="import" href="web2/vulcanize/WebComponents/ImageCarousel/image-carousel.html" />
+    <link rel="import" href="web2/vulcanize/WebComponents/Carousel/carousel.html" />
+
 </head>
 <body class="fullbleed">
     <vi-app label="VidyanoCrontab" class="fit">
         <template is="dom-template">
-            <!--<vc-crontab></vc-crontab>-->
-            <vc-google-address ></vc-google-address>
-           
+            <div class="fit layout vertical">
+                <!--<vc-crontab></vc-crontab>
+                <vc-google-address ></vc-google-address>-->
+                <vc-carousel class="flex"></vc-carousel>
+            </div>
+
         </template>
     </vi-app>
-
 </body>
 </html>

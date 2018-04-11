@@ -1,18 +1,9 @@
-﻿:host * {
-  font-size: 20px; }
-
-:host .card-container {
+﻿:host .card-container {
   height: 100%;
   padding-left: 2%; }
 
-:host .widthFix {
-  width: 900px; }
-
 :host vi-checkbox {
   margin-left: 4%; }
-
-:host .patternCheck {
-  width: 200px; }
 
 :host h2 {
   background-color: var(--theme-color-darker);
@@ -23,16 +14,14 @@
 
 :host p {
   margin-left: 2%;
-  padding-left: 2%;
-  font-size: 20px; }
+  padding-left: 2%; }
 
 :host .checkBoxes {
   margin-left: 2%;
   padding-left: 1%; }
 
 :host .checkBoxes paper-checkbox {
-  padding-top: 1%;
-  width: 150px; }
+  padding-top: 1%; }
 
 :host .checkBoxFix {
   margin-left: 4%;
@@ -40,10 +29,9 @@
 
 :host .labelFix {
   display: flex;
-  height: 50px;
   align-items: center; }
   :host .labelFix label {
-    margin-left: .5%; }
+    margin-left: 4.5%; }
 
 :host .warning {
   color: var(--theme-color-error); }

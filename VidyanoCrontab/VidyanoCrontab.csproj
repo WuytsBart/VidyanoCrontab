@@ -92,9 +92,13 @@
     <Compile Include="Service\CrontabQueries.cs" />
     <Content Include="App_Data\Websites\Default\index.html" />
     <Content Include="favicon.ico" />
-    <Content Include="libs\layout\layout.html" />
-    <Content Include="libs\layout\shadow-layout.html" />
-    <Content Include="libs\layout\x-layout.html" />
+    <Content Include="libs\iron-image\demo\index.html" />
+    <Content Include="libs\iron-image\demo\loading.png" />
+    <Content Include="libs\iron-image\demo\polymer.svg" />
+    <Content Include="libs\iron-image\index.html" />
+    <Content Include="libs\iron-image\iron-image.html" />
+    <Content Include="libs\iron-image\test\index.html" />
+    <Content Include="libs\iron-image\test\iron-image.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -112,11 +116,16 @@
     <Content Include=".bowerrc">
       <DependentUpon>bower.json</DependentUpon>
     </Content>
-    <Content Include="libs\layout\.bower.json" />
-    <Content Include="libs\layout\bower.json" />
-    <Content Include="libs\layout\layout.less" />
-    <Content Include="libs\layout\README.md" />
-    <Content Include="libs\layout\_layout.scss" />
+    <Content Include="WebComponents\Carousel\carousel.css">
+      <DependentUpon>carousel.scss</DependentUpon>
+    </Content>
+    <Content Include="WebComponents\Carousel\carousel.html" />
+    <Content Include="WebComponents\Carousel\carousel.js">
+      <DependentUpon>carousel.ts</DependentUpon>
+    </Content>
+    <Content Include="WebComponents\Carousel\carousel.min.css">
+      <DependentUpon>carousel.css</DependentUpon>
+    </Content>
     <Content Include="WebComponents\Crontab\crontab.css">
       <DependentUpon>crontab.scss</DependentUpon>
     </Content>
@@ -131,10 +140,28 @@
     <Content Include="WebComponents\GoogleAddress\google-address.js">
       <DependentUpon>google-address.ts</DependentUpon>
     </Content>
+    <Content Include="WebComponents\GoogleAddress\google-address.min.css">
+      <DependentUpon>google-address.css</DependentUpon>
+    </Content>
+    <Content Include="WebComponents\ImageCarousel\image-carousel.css" />
+    <Content Include="WebComponents\ImageCarousel\image-carousel.html" />
+    <Content Include="WebComponents\ImageCarousel\image-carousel.js" />
+    <Content Include="WebComponents\ImageCarousel\image-carousel.min.css" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="libs\iron-image\.bower.json" />
+    <Content Include="libs\iron-image\.github\CODEOWNERS" />
+    <Content Include="libs\iron-image\.github\ISSUE_TEMPLATE.md" />
+    <Content Include="libs\iron-image\.gitignore" />
+    <Content Include="libs\iron-image\.travis.yml" />
+    <Content Include="libs\iron-image\bower.json" />
+    <Content Include="libs\iron-image\CONTRIBUTING.md" />
+    <Content Include="libs\iron-image\package-lock.json" />
+    <Content Include="libs\iron-image\package.json" />
+    <Content Include="libs\iron-image\README.md" />
+    <Content Include="libs\layout\_layout.scss" />
     <None Include="packages.config" />
     <Content Include="tsconfig.json" />
     <None Include="Web.vidyano">
@@ -147,15 +174,23 @@
     </Content>
     <Content Include="WebComponents\Crontab\crontab.scss" />
     <Content Include="WebComponents\GoogleAddress\google-address.scss" />
+    <Content Include="WebComponents\ImageCarousel\image-carousel.scss" />
+    <Content Include="WebComponents\Carousel\carousel.scss" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="libs\iron-image\iron-image.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\vidyano\vidyano.d.ts" />
+    <TypeScriptCompile Include="WebComponents\Carousel\carousel.ts" />
     <TypeScriptCompile Include="WebComponents\Crontab\crontab.ts" />
     <TypeScriptCompile Include="WebComponents\GoogleAddress\google-address.ts" />
+    <TypeScriptCompile Include="WebComponents\ImageCarousel\image-carousel.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="WebComponents\Carousel\Images\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
