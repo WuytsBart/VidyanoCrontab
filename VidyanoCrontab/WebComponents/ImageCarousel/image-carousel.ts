@@ -1,3 +1,5 @@
+
+
 namespace Auby.WebComponents {
     @Vidyano.WebComponents.WebComponent.register({
         properties: {
@@ -25,6 +27,20 @@ namespace Auby.WebComponents {
             autoRun: {
                 type: Boolean
             }
+            ,
+            previews: Array,
+            currentIndex: {
+                type: Number,
+                value: 0
+            },
+            indicators: {
+                type: Boolean,
+                value: false
+            },
+            previewAmount: {
+                type: Number,
+                value: 5
+            }
         },
         observers: [
             "_onIntervalDurationChanged(intervalDuration, isAttached)",
@@ -36,24 +52,64 @@ namespace Auby.WebComponents {
     export class ImageCarousel extends Vidyano.WebComponents.WebComponent {
         readonly inTransition: boolean; private _setInTransition: (value: boolean) => void;
         readonly moveDirection: string; private _setMoveDirection: (value: string) => void;
-
+        
+        images: string[];
         intervalDuration: number;
         base64: boolean;
+        previews: string[];
+        currentIndex: number;
+        indicators: boolean;
+        previewAmount: number;
 
         private _images: linqjs.Enumerable<Element>;
         private _indicators: Array<Element>;        
         private _interval: number;
         private _trackX: number;
-        private _previews: Array<Element>
+        private _tempPreviews: Array<Element>
 
-        private _testFunction(){
-            console.log(this._indicators);
-            console.log(this._previews);
-    }
+        private _testFunction() {
+            this._setPreviews(4);
+            
+        }
+
+        private _setPreviews(Index: number) {
+            if (this.currentIndex === 0) {
+                document.getElementById("previewBack").style.visibility = "hidden";
+            }
+            else {
+                document.getElementById("previewBack").style.visibility = "visible";
+            }
+            this.previews = [];
+           
+            var tempArray: string[];
+            var i;
+            var x;
+            tempArray = [];
+            for (i = 0; i < this.previewAmount; i++) {
+                x = Index + i;
+                tempArray.push(this.images[x]);
+            }
+            this.set("previews", tempArray);
+            this.currentIndex = Index + this.previewAmount;
+            if (this.currentIndex === this.images.length) {
+                document.getElementById("previewForward").style.visibility = "hidden";
+            }
+            else {
+                document.getElementById("previewForward").style.visibility = "visible";
+            }
+        }
+
+        async attached() {
+            super.attached();
+            this._setPreviews(0);
+            if (!this.indicators) {
+                document.getElementById("indicators").style.visibility = "hidden";
+            }
+        }
 
         detached() {
             this._clearInterval();
-            super.detached();
+            super.detached();            
         }
 
         private _clearInterval() {
@@ -87,7 +143,6 @@ namespace Auby.WebComponents {
                 else {
                     this._setMoveDirection(nextIndex < currentIndex && !(currentIndex === this._images.count() - 1 && nextIndex == 0 && this._interval != null) ? "back" : "forward");
                 }
-
                 const nextElement = items[nextIndex];
 
                 setTimeout(() => {
@@ -147,15 +202,44 @@ namespace Auby.WebComponents {
             this._move();
         }
 
+        private _onPreviewForwardTap(e: TapEvent) {
+            if (this.inTransition)
+                return;
+
+            for (var i = 0; i < this.previewAmount; i++) {
+                var x;
+                x = this.currentIndex - i
+                if (x + this.previewAmount <= this.images.length) {
+                    this._setPreviews(x);
+                    break;
+                } 
+            }
+        }
+
+        private _onPreviewBackTap(e: TapEvent) {
+            if (this.inTransition)
+                return;
+
+            for (var i = 0; i < this.previewAmount; i++) {
+                var x;
+                x = this.previewAmount - i;
+                if (this.currentIndex - x - this.previewAmount >= 0) {
+                    this.currentIndex = this.currentIndex - x - this.previewAmount;
+                    this._setPreviews(this.currentIndex);
+                    break;
+                }
+            }
+        }
+
         private _onImagesChanged(images: Array<string>, isAttached: boolean) {
             if (isAttached) {
                 setTimeout(() => {
                     this.$$(".item:first-child").classList.add("active");
                     this.$$(".indicator:first-child").classList.add("active");
-
+                    
                     this._images = Enumerable.from(this.querySelectorAll(".item"));
                     this._indicators = Array.from(this.querySelectorAll(".indicator"));
-                    this._previews = Array.from(this.querySelectorAll(".preview"));
+                    this._tempPreviews = Array.from(this.querySelectorAll(".preview"));
                 }, 1);
             }
         }
@@ -165,7 +249,6 @@ namespace Auby.WebComponents {
                 return;
 
             const index = this._indicators.indexOf(<any>e.currentTarget);
-
             this._clearInterval();
             this._move(index);
         }
@@ -173,10 +256,8 @@ namespace Auby.WebComponents {
         private _onPreviewTap(e: TapEvent) {
             if (this.inTransition === true)
                 return;
-           
-            const index = this._previews.indexOf(<any>e.currentTarget);
-            console.log(this._previews[index].__data__);
 
+            const index = this._tempPreviews.indexOf(<any>e.currentTarget) + this.currentIndex - this.previewAmount;
             this._clearInterval();
             this._move(index);
         }

@@ -9,8 +9,44 @@ var Auby;
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             ImageCarousel.prototype._testFunction = function () {
-                console.log(this._indicators);
-                console.log(this._previews);
+                this._setPreviews(4);
+            };
+            ImageCarousel.prototype._setPreviews = function (Index) {
+                if (this.currentIndex === 0) {
+                    document.getElementById("previewBack").style.visibility = "hidden";
+                }
+                else {
+                    document.getElementById("previewBack").style.visibility = "visible";
+                }
+                this.previews = [];
+                var tempArray;
+                var i;
+                var x;
+                tempArray = [];
+                for (i = 0; i < this.previewAmount; i++) {
+                    x = Index + i;
+                    tempArray.push(this.images[x]);
+                }
+                this.set("previews", tempArray);
+                this.currentIndex = Index + this.previewAmount;
+                if (this.currentIndex === this.images.length) {
+                    document.getElementById("previewForward").style.visibility = "hidden";
+                }
+                else {
+                    document.getElementById("previewForward").style.visibility = "visible";
+                }
+            };
+            ImageCarousel.prototype.attached = function () {
+                return __awaiter(this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        _super.prototype.attached.call(this);
+                        this._setPreviews(0);
+                        if (!this.indicators) {
+                            document.getElementById("indicators").style.visibility = "hidden";
+                        }
+                        return [2 /*return*/];
+                    });
+                });
             };
             ImageCarousel.prototype.detached = function () {
                 this._clearInterval();
@@ -90,6 +126,31 @@ var Auby;
                 this._setMoveDirection("forward");
                 this._move();
             };
+            ImageCarousel.prototype._onPreviewForwardTap = function (e) {
+                if (this.inTransition)
+                    return;
+                for (var i = 0; i < this.previewAmount; i++) {
+                    var x;
+                    x = this.currentIndex - i;
+                    if (x + this.previewAmount <= this.images.length) {
+                        this._setPreviews(x);
+                        break;
+                    }
+                }
+            };
+            ImageCarousel.prototype._onPreviewBackTap = function (e) {
+                if (this.inTransition)
+                    return;
+                for (var i = 0; i < this.previewAmount; i++) {
+                    var x;
+                    x = this.previewAmount - i;
+                    if (this.currentIndex - x - this.previewAmount >= 0) {
+                        this.currentIndex = this.currentIndex - x - this.previewAmount;
+                        this._setPreviews(this.currentIndex);
+                        break;
+                    }
+                }
+            };
             ImageCarousel.prototype._onImagesChanged = function (images, isAttached) {
                 var _this = this;
                 if (isAttached) {
@@ -98,7 +159,7 @@ var Auby;
                         _this.$$(".indicator:first-child").classList.add("active");
                         _this._images = Enumerable.from(_this.querySelectorAll(".item"));
                         _this._indicators = Array.from(_this.querySelectorAll(".indicator"));
-                        _this._previews = Array.from(_this.querySelectorAll(".preview"));
+                        _this._tempPreviews = Array.from(_this.querySelectorAll(".preview"));
                     }, 1);
                 }
             };
@@ -112,8 +173,7 @@ var Auby;
             ImageCarousel.prototype._onPreviewTap = function (e) {
                 if (this.inTransition === true)
                     return;
-                var index = this._previews.indexOf(e.currentTarget);
-                console.log(this._previews[index].__data__);
+                var index = this._tempPreviews.indexOf(e.currentTarget) + this.currentIndex - this.previewAmount;
                 this._clearInterval();
                 this._move(index);
             };
@@ -184,6 +244,19 @@ var Auby;
                         imageOpen: Boolean,
                         autoRun: {
                             type: Boolean
+                        },
+                        previews: Array,
+                        currentIndex: {
+                            type: Number,
+                            value: 0
+                        },
+                        indicators: {
+                            type: Boolean,
+                            value: false
+                        },
+                        previewAmount: {
+                            type: Number,
+                            value: 5
                         }
                     },
                     observers: [

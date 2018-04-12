@@ -19,7 +19,9 @@ namespace VidyanoCrontab.WebComponents {
                 "Carousel/Images/olifant.jpg",
                 "Carousel/Images/reiger.jpg",
                 "Carousel/Images/tijger.jpg",
-                "Carousel/Images/alpaca.jpeg"
+                "Carousel/Images/alpaca.jpeg",
+                "Carousel/Images/hond.jpg",
+                "Carousel/Images/uil.jpg",
             ]);
         }
 

@@ -37,25 +37,45 @@
     -webkit-justify-content: center;
     justify-content: center;
     position: absolute;
-    height: 15%;
+    height: 25%;
     width: 100%;
-    bottom: 10%;
-    transition: all 0s; }
+    bottom: 0; }
     :host #previews .preview {
       height: 100%;
-      width: 30%;
-      border: 2px solid white;
+      width: 25%;
+      border: 1px solid black;
       margin: 2px;
-      transition: all 0.8s;
       cursor: pointer;
       bottom: 0; }
       :host #previews .preview.active {
-        left: 0; }
-      :host #previews .preview.active.move {
-        transition: all 0.8s; }
-      :host #previews .preview.next.move {
-        left: 0;
-        transition: all 0.8s; }
+        border: 2px solid #ff0000; }
+  :host .previewmover {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    position: absolute;
+    height: 60px;
+    width: 20px;
+    margin: auto 0;
+    background-color: none;
+    bottom: 5%;
+    cursor: pointer; }
+    :host .previewmover:hover {
+      background-color: rgba(0, 0, 0, 0.2); }
+    :host .previewmover#previewBack {
+      left: 0; }
+    :host .previewmover#previewForward {
+      right: 0; }
+    :host .previewmover svg {
+      -ms-flex: 1;
+      -webkit-flex: 1;
+      flex: 1;
+      min-height: 0;
+      min-width: 0;
+      -ms-align-self: center;
+      -webkit-align-self: center;
+      align-self: center;
+      fill: black; }
   :host #indicators {
     display: -ms-flexbox;
     display: -webkit-flex;
