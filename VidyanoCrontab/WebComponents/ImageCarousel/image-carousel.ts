@@ -39,7 +39,7 @@ namespace Auby.WebComponents {
             },
             previewAmount: {
                 type: Number,
-                value: 5
+                value: 3
             }
         },
         observers: [
@@ -68,7 +68,6 @@ namespace Auby.WebComponents {
         private _tempPreviews: Array<Element>
 
         private _testFunction() {
-            this._setPreviews(4);
             
         }
 
@@ -79,8 +78,7 @@ namespace Auby.WebComponents {
             else {
                 document.getElementById("previewBack").style.visibility = "visible";
             }
-            this.previews = [];
-           
+            this.previews = [];           
             var tempArray: string[];
             var i;
             var x;
@@ -101,7 +99,7 @@ namespace Auby.WebComponents {
 
         async attached() {
             super.attached();
-            this._setPreviews(0);
+            this._setPreviews(this.currentIndex);
             if (!this.indicators) {
                 document.getElementById("indicators").style.visibility = "hidden";
             }
@@ -162,6 +160,9 @@ namespace Auby.WebComponents {
                         nextElement.classList.remove("next");
                         nextElement.classList.remove("move");
                         nextElement.classList.add("active");
+
+
+                        this._setPreviewActive();
 
                         if (this._interval == null) {
                             this._setInterval();
@@ -236,11 +237,28 @@ namespace Auby.WebComponents {
                 setTimeout(() => {
                     this.$$(".item:first-child").classList.add("active");
                     this.$$(".indicator:first-child").classList.add("active");
-                    
+                    this._setPreviewActive();
+                                       
                     this._images = Enumerable.from(this.querySelectorAll(".item"));
                     this._indicators = Array.from(this.querySelectorAll(".indicator"));
                     this._tempPreviews = Array.from(this.querySelectorAll(".preview"));
                 }, 1);
+            }
+        }
+
+        private _setPreviewActive() {
+            
+            for (var i = 0; i <= this.previewAmount; i++) {
+                const activeElement = this.$$(".item.active").src;
+                if (i != 0) {
+                    this.$$(".preview:nth-child(" + (i) + ")").classList.remove("active");
+                }
+
+                if (activeElement === this._getImageSrc(this.previews[i])) {
+                    
+                    this.$$(".preview:nth-child(" + (i + 1) + ")").classList.toggle("active");
+                    break;
+                }
             }
         }
 
@@ -261,8 +279,6 @@ namespace Auby.WebComponents {
             this._clearInterval();
             this._move(index);
         }
-
-        
 
         private _onItemsTrack(e: any) {
             if (this.inTransition === true)

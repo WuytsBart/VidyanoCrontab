@@ -9,7 +9,6 @@ var Auby;
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             ImageCarousel.prototype._testFunction = function () {
-                this._setPreviews(4);
             };
             ImageCarousel.prototype._setPreviews = function (Index) {
                 if (this.currentIndex === 0) {
@@ -40,7 +39,7 @@ var Auby;
                 return __awaiter(this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         _super.prototype.attached.call(this);
-                        this._setPreviews(0);
+                        this._setPreviews(this.currentIndex);
                         if (!this.indicators) {
                             document.getElementById("indicators").style.visibility = "hidden";
                         }
@@ -92,6 +91,7 @@ var Auby;
                             nextElement_1.classList.remove("next");
                             nextElement_1.classList.remove("move");
                             nextElement_1.classList.add("active");
+                            _this._setPreviewActive();
                             if (_this._interval == null) {
                                 _this._setInterval();
                             }
@@ -157,10 +157,23 @@ var Auby;
                     setTimeout(function () {
                         _this.$$(".item:first-child").classList.add("active");
                         _this.$$(".indicator:first-child").classList.add("active");
+                        _this._setPreviewActive();
                         _this._images = Enumerable.from(_this.querySelectorAll(".item"));
                         _this._indicators = Array.from(_this.querySelectorAll(".indicator"));
                         _this._tempPreviews = Array.from(_this.querySelectorAll(".preview"));
                     }, 1);
+                }
+            };
+            ImageCarousel.prototype._setPreviewActive = function () {
+                for (var i = 0; i <= this.previewAmount; i++) {
+                    var activeElement = this.$$(".item.active").src;
+                    if (i != 0) {
+                        this.$$(".preview:nth-child(" + (i) + ")").classList.remove("active");
+                    }
+                    if (activeElement === this._getImageSrc(this.previews[i])) {
+                        this.$$(".preview:nth-child(" + (i + 1) + ")").classList.toggle("active");
+                        break;
+                    }
                 }
             };
             ImageCarousel.prototype._onIndicatorTap = function (e) {
@@ -256,7 +269,7 @@ var Auby;
                         },
                         previewAmount: {
                             type: Number,
-                            value: 5
+                            value: 3
                         }
                     },
                     observers: [

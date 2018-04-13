@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="image-carousel.css" />
         <link rel="import" href="../../libs/iron-image/iron-image.html">
         <vi-size-tracker class="flex" size="{{size}}"></vi-size-tracker>
-        <!--<button on-tap="_testFunction">test</button>-->
+        <button on-tap="_testFunction">test</button>
         <div id="items" move-direction$="[[moveDirection]]" on-track="_onItemsTrack">
             <template is="dom-repeat" items="[[images]]">
                 <iron-image class="item" sizing="cover" src="[[_getImageSrc(item)]]"></iron-image>
