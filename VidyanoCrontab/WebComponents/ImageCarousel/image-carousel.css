@@ -43,12 +43,15 @@
     :host #previews .preview {
       height: 100%;
       width: 25%;
-      border: 1px solid black;
       margin: 2px;
       cursor: pointer;
-      bottom: 0; }
+      bottom: 0;
+      opacity: 0.5; }
       :host #previews .preview.active {
-        border: 2px solid #ff0000; }
+        border: 2px solid var(--theme-color-warning);
+        opacity: 1; }
+      :host #previews .preview:hover {
+        opacity: 0.75; }
   :host .previewmover {
     display: -ms-flexbox;
     display: -webkit-flex;
@@ -110,8 +113,7 @@
     width: 20px;
     margin: auto 0;
     background-color: none;
-    top: 0;
-    bottom: 0;
+    top: 37.5%;
     cursor: pointer; }
     :host .mover:hover {
       background-color: rgba(0, 0, 0, 0.2); }

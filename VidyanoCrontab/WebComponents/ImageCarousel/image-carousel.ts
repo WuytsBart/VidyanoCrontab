@@ -29,7 +29,7 @@ namespace Auby.WebComponents {
             }
             ,
             previews: Array,
-            currentIndex: {
+            previewIndex: {
                 type: Number,
                 value: 0
             },
@@ -57,7 +57,7 @@ namespace Auby.WebComponents {
         intervalDuration: number;
         base64: boolean;
         previews: string[];
-        currentIndex: number;
+        previewIndex: number;
         indicators: boolean;
         previewAmount: number;
 
@@ -65,14 +65,10 @@ namespace Auby.WebComponents {
         private _indicators: Array<Element>;        
         private _interval: number;
         private _trackX: number;
-        private _tempPreviews: Array<Element>
-
-        private _testFunction() {
-            
-        }
+        private _tempPreviews: Array<Element>        
 
         private _setPreviews(Index: number) {
-            if (this.currentIndex === 0) {
+            if (this.previewIndex === 0) {
                 document.getElementById("previewBack").style.visibility = "hidden";
             }
             else {
@@ -88,8 +84,8 @@ namespace Auby.WebComponents {
                 tempArray.push(this.images[x]);
             }
             this.set("previews", tempArray);
-            this.currentIndex = Index + this.previewAmount;
-            if (this.currentIndex === this.images.length) {
+            this.previewIndex = Index + this.previewAmount;
+            if (this.previewIndex === this.images.length) {
                 document.getElementById("previewForward").style.visibility = "hidden";
             }
             else {
@@ -99,7 +95,7 @@ namespace Auby.WebComponents {
 
         async attached() {
             super.attached();
-            this._setPreviews(this.currentIndex);
+            this._setPreviews(this.previewIndex);
             if (!this.indicators) {
                 document.getElementById("indicators").style.visibility = "hidden";
             }
@@ -142,7 +138,6 @@ namespace Auby.WebComponents {
                     this._setMoveDirection(nextIndex < currentIndex && !(currentIndex === this._images.count() - 1 && nextIndex == 0 && this._interval != null) ? "back" : "forward");
                 }
                 const nextElement = items[nextIndex];
-
                 setTimeout(() => {
                     nextElement.classList.add("next");
                     activeElement.classList.add("move");
@@ -159,9 +154,7 @@ namespace Auby.WebComponents {
                         activeElement.classList.remove("move");
                         nextElement.classList.remove("next");
                         nextElement.classList.remove("move");
-                        nextElement.classList.add("active");
-
-
+                        nextElement.classList.add("active");                        
                         this._setPreviewActive();
 
                         if (this._interval == null) {
@@ -209,12 +202,16 @@ namespace Auby.WebComponents {
 
             for (var i = 0; i < this.previewAmount; i++) {
                 var x;
-                x = this.currentIndex - i
+                x = this.previewIndex - i
                 if (x + this.previewAmount <= this.images.length) {
                     this._setPreviews(x);
                     break;
                 } 
             }
+            if (this.$$(".preview.active")) {
+                this.$$(".preview.active").classList.remove("active");
+            }
+            this._setPreviewActive();
         }
 
         private _onPreviewBackTap(e: TapEvent) {
@@ -224,12 +221,16 @@ namespace Auby.WebComponents {
             for (var i = 0; i < this.previewAmount; i++) {
                 var x;
                 x = this.previewAmount - i;
-                if (this.currentIndex - x - this.previewAmount >= 0) {
-                    this.currentIndex = this.currentIndex - x - this.previewAmount;
-                    this._setPreviews(this.currentIndex);
+                if (this.previewIndex - x - this.previewAmount >= 0) {
+                    this.previewIndex = this.previewIndex - x - this.previewAmount;
+                    this._setPreviews(this.previewIndex);
                     break;
                 }
             }
+            if (this.$$(".preview.active")) {
+                this.$$(".preview.active").classList.remove("active");
+            }
+            this._setPreviewActive();
         }
 
         private _onImagesChanged(images: Array<string>, isAttached: boolean) {
@@ -249,14 +250,15 @@ namespace Auby.WebComponents {
         private _setPreviewActive() {
             
             for (var i = 0; i <= this.previewAmount; i++) {
-                const activeElement = this.$$(".item.active").src;
+                const test = <HTMLImageElement>this.$$(".item.active")
+                const activeElement = test.src;
                 if (i != 0) {
                     this.$$(".preview:nth-child(" + (i) + ")").classList.remove("active");
                 }
 
                 if (activeElement === this._getImageSrc(this.previews[i])) {
-                    
-                    this.$$(".preview:nth-child(" + (i + 1) + ")").classList.toggle("active");
+
+                    this.$$(".preview:nth-child(" + (i + 1) + ")").classList.add("active");
                     break;
                 }
             }
@@ -275,7 +277,7 @@ namespace Auby.WebComponents {
             if (this.inTransition === true)
                 return;
 
-            const index = this._tempPreviews.indexOf(<any>e.currentTarget) + this.currentIndex - this.previewAmount;
+            const index = this._tempPreviews.indexOf(<any>e.currentTarget) + this.previewIndex - this.previewAmount;
             this._clearInterval();
             this._move(index);
         }

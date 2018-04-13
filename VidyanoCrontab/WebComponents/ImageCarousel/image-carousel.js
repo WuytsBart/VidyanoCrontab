@@ -8,10 +8,8 @@ var Auby;
             function ImageCarousel() {
                 return _super !== null && _super.apply(this, arguments) || this;
             }
-            ImageCarousel.prototype._testFunction = function () {
-            };
             ImageCarousel.prototype._setPreviews = function (Index) {
-                if (this.currentIndex === 0) {
+                if (this.previewIndex === 0) {
                     document.getElementById("previewBack").style.visibility = "hidden";
                 }
                 else {
@@ -27,8 +25,8 @@ var Auby;
                     tempArray.push(this.images[x]);
                 }
                 this.set("previews", tempArray);
-                this.currentIndex = Index + this.previewAmount;
-                if (this.currentIndex === this.images.length) {
+                this.previewIndex = Index + this.previewAmount;
+                if (this.previewIndex === this.images.length) {
                     document.getElementById("previewForward").style.visibility = "hidden";
                 }
                 else {
@@ -39,7 +37,7 @@ var Auby;
                 return __awaiter(this, void 0, void 0, function () {
                     return __generator(this, function (_a) {
                         _super.prototype.attached.call(this);
-                        this._setPreviews(this.currentIndex);
+                        this._setPreviews(this.previewIndex);
                         if (!this.indicators) {
                             document.getElementById("indicators").style.visibility = "hidden";
                         }
@@ -131,12 +129,16 @@ var Auby;
                     return;
                 for (var i = 0; i < this.previewAmount; i++) {
                     var x;
-                    x = this.currentIndex - i;
+                    x = this.previewIndex - i;
                     if (x + this.previewAmount <= this.images.length) {
                         this._setPreviews(x);
                         break;
                     }
                 }
+                if (this.$$(".preview.active")) {
+                    this.$$(".preview.active").classList.remove("active");
+                }
+                this._setPreviewActive();
             };
             ImageCarousel.prototype._onPreviewBackTap = function (e) {
                 if (this.inTransition)
@@ -144,12 +146,16 @@ var Auby;
                 for (var i = 0; i < this.previewAmount; i++) {
                     var x;
                     x = this.previewAmount - i;
-                    if (this.currentIndex - x - this.previewAmount >= 0) {
-                        this.currentIndex = this.currentIndex - x - this.previewAmount;
-                        this._setPreviews(this.currentIndex);
+                    if (this.previewIndex - x - this.previewAmount >= 0) {
+                        this.previewIndex = this.previewIndex - x - this.previewAmount;
+                        this._setPreviews(this.previewIndex);
                         break;
                     }
                 }
+                if (this.$$(".preview.active")) {
+                    this.$$(".preview.active").classList.remove("active");
+                }
+                this._setPreviewActive();
             };
             ImageCarousel.prototype._onImagesChanged = function (images, isAttached) {
                 var _this = this;
@@ -166,12 +172,13 @@ var Auby;
             };
             ImageCarousel.prototype._setPreviewActive = function () {
                 for (var i = 0; i <= this.previewAmount; i++) {
-                    var activeElement = this.$$(".item.active").src;
+                    var test_1 = this.$$(".item.active");
+                    var activeElement = test_1.src;
                     if (i != 0) {
                         this.$$(".preview:nth-child(" + (i) + ")").classList.remove("active");
                     }
                     if (activeElement === this._getImageSrc(this.previews[i])) {
-                        this.$$(".preview:nth-child(" + (i + 1) + ")").classList.toggle("active");
+                        this.$$(".preview:nth-child(" + (i + 1) + ")").classList.add("active");
                         break;
                     }
                 }
@@ -186,7 +193,7 @@ var Auby;
             ImageCarousel.prototype._onPreviewTap = function (e) {
                 if (this.inTransition === true)
                     return;
-                var index = this._tempPreviews.indexOf(e.currentTarget) + this.currentIndex - this.previewAmount;
+                var index = this._tempPreviews.indexOf(e.currentTarget) + this.previewIndex - this.previewAmount;
                 this._clearInterval();
                 this._move(index);
             };
@@ -259,7 +266,7 @@ var Auby;
                             type: Boolean
                         },
                         previews: Array,
-                        currentIndex: {
+                        previewIndex: {
                             type: Number,
                             value: 0
                         },
