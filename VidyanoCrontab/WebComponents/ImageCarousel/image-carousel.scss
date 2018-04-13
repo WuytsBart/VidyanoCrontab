@@ -73,6 +73,9 @@
             &.active {
                 border: 2px solid var(--theme-color-warning);
                 opacity: 1;
+                &:hover {
+                    opacity: 1;
+                }
             }
 
             &:hover {

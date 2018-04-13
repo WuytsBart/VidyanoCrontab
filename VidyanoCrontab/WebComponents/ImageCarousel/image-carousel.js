@@ -9,29 +9,27 @@ var Auby;
                 return _super !== null && _super.apply(this, arguments) || this;
             }
             ImageCarousel.prototype._setPreviews = function (Index) {
-                if (this.previewIndex === 0) {
-                    document.getElementById("previewBack").style.visibility = "hidden";
-                }
-                else {
-                    document.getElementById("previewBack").style.visibility = "visible";
-                }
                 this.previews = [];
                 var tempArray;
-                var i;
-                var x;
+                var offset = Math.floor(this.previewAmount / 2);
+                var i = 0 - offset;
                 tempArray = [];
-                for (i = 0; i < this.previewAmount; i++) {
-                    x = Index + i;
-                    tempArray.push(this.images[x]);
+                for (i; i < this.previewAmount - offset; i++) {
+                    var x = Index + i;
+                    if (x < this.images.length && x >= 0) {
+                        tempArray.push(this.images[x]);
+                    }
+                    else if (x >= this.images.length) {
+                        var y = x - this.images.length;
+                        tempArray.push(this.images[y]);
+                    }
+                    else if (x < 0) {
+                        var z = this.images.length + x;
+                        tempArray.push(this.images[z]);
+                    }
                 }
                 this.set("previews", tempArray);
-                this.previewIndex = Index + this.previewAmount;
-                if (this.previewIndex === this.images.length) {
-                    document.getElementById("previewForward").style.visibility = "hidden";
-                }
-                else {
-                    document.getElementById("previewForward").style.visibility = "visible";
-                }
+                this.previewIndex = Index;
             };
             ImageCarousel.prototype.attached = function () {
                 return __awaiter(this, void 0, void 0, function () {
@@ -39,7 +37,7 @@ var Auby;
                         _super.prototype.attached.call(this);
                         this._setPreviews(this.previewIndex);
                         if (!this.indicators) {
-                            document.getElementById("indicators").style.visibility = "hidden";
+                            this.$.indicators.style.visibility = "hidden";
                         }
                         return [2 /*return*/];
                     });
@@ -89,6 +87,12 @@ var Auby;
                             nextElement_1.classList.remove("next");
                             nextElement_1.classList.remove("move");
                             nextElement_1.classList.add("active");
+                            if (_this.previewIndex + 1 != _this.images.length) {
+                                _this._setPreviews(_this.previewIndex + 1);
+                            }
+                            else {
+                                _this._setPreviews(0);
+                            }
                             _this._setPreviewActive();
                             if (_this._interval == null) {
                                 _this._setInterval();
@@ -125,15 +129,11 @@ var Auby;
                 this._move();
             };
             ImageCarousel.prototype._onPreviewForwardTap = function (e) {
-                if (this.inTransition)
-                    return;
-                for (var i = 0; i < this.previewAmount; i++) {
-                    var x;
-                    x = this.previewIndex - i;
-                    if (x + this.previewAmount <= this.images.length) {
-                        this._setPreviews(x);
-                        break;
-                    }
+                if (this.previewIndex < this.images.length) {
+                    this._setPreviews(this.previewIndex + 1);
+                }
+                else {
+                    this._setPreviews(0);
                 }
                 if (this.$$(".preview.active")) {
                     this.$$(".preview.active").classList.remove("active");
@@ -141,16 +141,11 @@ var Auby;
                 this._setPreviewActive();
             };
             ImageCarousel.prototype._onPreviewBackTap = function (e) {
-                if (this.inTransition)
-                    return;
-                for (var i = 0; i < this.previewAmount; i++) {
-                    var x;
-                    x = this.previewAmount - i;
-                    if (this.previewIndex - x - this.previewAmount >= 0) {
-                        this.previewIndex = this.previewIndex - x - this.previewAmount;
-                        this._setPreviews(this.previewIndex);
-                        break;
-                    }
+                if (this.previewIndex > 0) {
+                    this._setPreviews(this.previewIndex - 1);
+                }
+                else {
+                    this._setPreviews(this.images.length - 1);
                 }
                 if (this.$$(".preview.active")) {
                     this.$$(".preview.active").classList.remove("active");
@@ -163,10 +158,8 @@ var Auby;
                     setTimeout(function () {
                         _this.$$(".item:first-child").classList.add("active");
                         _this.$$(".indicator:first-child").classList.add("active");
-                        _this._setPreviewActive();
                         _this._images = Enumerable.from(_this.querySelectorAll(".item"));
                         _this._indicators = Array.from(_this.querySelectorAll(".indicator"));
-                        _this._tempPreviews = Array.from(_this.querySelectorAll(".preview"));
                     }, 1);
                 }
             };
@@ -193,9 +186,17 @@ var Auby;
             ImageCarousel.prototype._onPreviewTap = function (e) {
                 if (this.inTransition === true)
                     return;
-                var index = this._tempPreviews.indexOf(e.currentTarget) + this.previewIndex - this.previewAmount;
+                var tapIndex = e.model.index;
+                var tapSrc = this.previews[tapIndex];
+                var index;
+                for (var i = 0; i < this.images.length; i++) {
+                    if (this.images[i] === tapSrc) {
+                        index = i;
+                    }
+                }
                 this._clearInterval();
                 this._move(index);
+                this._setPreviews(index);
             };
             ImageCarousel.prototype._onItemsTrack = function (e) {
                 if (this.inTransition === true)
@@ -276,7 +277,7 @@ var Auby;
                         },
                         previewAmount: {
                             type: Number,
-                            value: 3
+                            value: 5
                         }
                     },
                     observers: [

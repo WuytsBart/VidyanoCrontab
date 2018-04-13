@@ -50,6 +50,8 @@
       :host #previews .preview.active {
         border: 2px solid var(--theme-color-warning);
         opacity: 1; }
+        :host #previews .preview.active:hover {
+          opacity: 1; }
       :host #previews .preview:hover {
         opacity: 0.75; }
   :host .previewmover {

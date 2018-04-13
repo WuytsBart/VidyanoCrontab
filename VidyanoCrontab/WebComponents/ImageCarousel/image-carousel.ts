@@ -39,7 +39,7 @@ namespace Auby.WebComponents {
             },
             previewAmount: {
                 type: Number,
-                value: 3
+                value: 5
             }
         },
         observers: [
@@ -65,39 +65,45 @@ namespace Auby.WebComponents {
         private _indicators: Array<Element>;        
         private _interval: number;
         private _trackX: number;
-        private _tempPreviews: Array<Element>        
+        
+
+        
 
         private _setPreviews(Index: number) {
-            if (this.previewIndex === 0) {
-                document.getElementById("previewBack").style.visibility = "hidden";
-            }
-            else {
-                document.getElementById("previewBack").style.visibility = "visible";
-            }
+            
             this.previews = [];           
             var tempArray: string[];
-            var i;
-            var x;
+           
+            var offset = Math.floor(this.previewAmount / 2);
+            var i = 0 - offset;
             tempArray = [];
-            for (i = 0; i < this.previewAmount; i++) {
-                x = Index + i;
-                tempArray.push(this.images[x]);
+            for (i; i < this.previewAmount - offset; i++) {
+                var x = Index + i;
+                if (x < this.images.length && x >= 0) {
+                    tempArray.push(this.images[x]);
+                }
+                else if (x >= this.images.length) {
+                    var y = x - this.images.length;
+                    tempArray.push(this.images[y]);
+                } else if (x < 0) {
+                    var z = this.images.length + x;
+                    tempArray.push(this.images[z]);
+                }
+
+                
             }
             this.set("previews", tempArray);
-            this.previewIndex = Index + this.previewAmount;
-            if (this.previewIndex === this.images.length) {
-                document.getElementById("previewForward").style.visibility = "hidden";
-            }
-            else {
-                document.getElementById("previewForward").style.visibility = "visible";
-            }
+            this.previewIndex = Index;
+            
+
+            
         }
 
         async attached() {
             super.attached();
             this._setPreviews(this.previewIndex);
             if (!this.indicators) {
-                document.getElementById("indicators").style.visibility = "hidden";
+                this.$.indicators.style.visibility = "hidden";
             }
         }
 
@@ -146,7 +152,6 @@ namespace Auby.WebComponents {
                     this.$$(".indicator.active").classList.remove("active");
                     this._indicators[nextIndex].classList.add("active");
 
-
                     setTimeout(() => {
                         this._setInTransition(false);
 
@@ -155,6 +160,14 @@ namespace Auby.WebComponents {
                         nextElement.classList.remove("next");
                         nextElement.classList.remove("move");
                         nextElement.classList.add("active");                        
+
+
+                        if (this.previewIndex + 1 != this.images.length) {
+                            this._setPreviews(this.previewIndex + 1);
+                        }
+                        else {
+                            this._setPreviews(0);
+                        }
                         this._setPreviewActive();
 
                         if (this._interval == null) {
@@ -197,17 +210,15 @@ namespace Auby.WebComponents {
         }
 
         private _onPreviewForwardTap(e: TapEvent) {
-            if (this.inTransition)
-                return;
 
-            for (var i = 0; i < this.previewAmount; i++) {
-                var x;
-                x = this.previewIndex - i
-                if (x + this.previewAmount <= this.images.length) {
-                    this._setPreviews(x);
-                    break;
-                } 
+
+            if (this.previewIndex < this.images.length) {
+                this._setPreviews(this.previewIndex + 1);
             }
+            else {
+                this._setPreviews(0);
+            }
+            
             if (this.$$(".preview.active")) {
                 this.$$(".preview.active").classList.remove("active");
             }
@@ -215,18 +226,15 @@ namespace Auby.WebComponents {
         }
 
         private _onPreviewBackTap(e: TapEvent) {
-            if (this.inTransition)
-                return;
 
-            for (var i = 0; i < this.previewAmount; i++) {
-                var x;
-                x = this.previewAmount - i;
-                if (this.previewIndex - x - this.previewAmount >= 0) {
-                    this.previewIndex = this.previewIndex - x - this.previewAmount;
-                    this._setPreviews(this.previewIndex);
-                    break;
-                }
+
+            if (this.previewIndex > 0) {
+                this._setPreviews(this.previewIndex - 1);
             }
+            else {
+                this._setPreviews(this.images.length - 1);
+            }
+
             if (this.$$(".preview.active")) {
                 this.$$(".preview.active").classList.remove("active");
             }
@@ -238,26 +246,26 @@ namespace Auby.WebComponents {
                 setTimeout(() => {
                     this.$$(".item:first-child").classList.add("active");
                     this.$$(".indicator:first-child").classList.add("active");
-                    this._setPreviewActive();
+                    
                                        
                     this._images = Enumerable.from(this.querySelectorAll(".item"));
                     this._indicators = Array.from(this.querySelectorAll(".indicator"));
-                    this._tempPreviews = Array.from(this.querySelectorAll(".preview"));
+                    
                 }, 1);
             }
         }
 
         private _setPreviewActive() {
-            
+
             for (var i = 0; i <= this.previewAmount; i++) {
                 const test = <HTMLImageElement>this.$$(".item.active")
                 const activeElement = test.src;
+
                 if (i != 0) {
                     this.$$(".preview:nth-child(" + (i) + ")").classList.remove("active");
                 }
 
                 if (activeElement === this._getImageSrc(this.previews[i])) {
-
                     this.$$(".preview:nth-child(" + (i + 1) + ")").classList.add("active");
                     break;
                 }
@@ -277,9 +285,18 @@ namespace Auby.WebComponents {
             if (this.inTransition === true)
                 return;
 
-            const index = this._tempPreviews.indexOf(<any>e.currentTarget) + this.previewIndex - this.previewAmount;
+            const tapIndex = e.model.index;
+            const tapSrc = this.previews[tapIndex];
+            var index;
+            for (var i = 0; i < this.images.length; i++) {
+                if (this.images[i] === tapSrc) {
+                     index = i;
+                }
+            }
+                        
             this._clearInterval();
             this._move(index);
+            this._setPreviews(index);
         }
 
         private _onItemsTrack(e: any) {
