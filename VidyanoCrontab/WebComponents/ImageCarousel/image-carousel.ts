@@ -40,8 +40,7 @@ namespace Auby.WebComponents {
             previewAmount: {
                 type: Number,
                 value: 5
-            },
-            
+            },            
         },
         observers: [
             "_onIntervalDurationChanged(intervalDuration, isAttached)",
@@ -62,20 +61,14 @@ namespace Auby.WebComponents {
         indicators: boolean;
         previewAmount: number;
         
-
         private _images: linqjs.Enumerable<Element>;
         private _indicators: Array<Element>;        
         private _interval: number;
         private _trackX: number;
-        
-
-        
-
-        private _setPreviews(Index: number) {
-            
+                
+        private _setPreviews(Index: number) {            
             this.previews = [];           
-            var tempArray: string[];
-           
+            var tempArray: string[];           
             var offset = Math.floor(this.previewAmount / 2);
             var i = 0 - offset;
             tempArray = [];
@@ -90,13 +83,10 @@ namespace Auby.WebComponents {
                 } else if (x < 0) {
                     var z = this.images.length + x;
                     tempArray.push(this.images[z]);
-                }
-
-                
+                }                
             }
             this.set("previews", tempArray);
-            this.previewIndex = Index;
-            
+            this.previewIndex = Index;            
         }
 
         async attached() {
@@ -107,7 +97,6 @@ namespace Auby.WebComponents {
             }
             var offset = Math.floor(this.previewAmount / 2);
             this.$$(".preview:nth-child(" + offset + ")").classList.add("active");
-
         }
 
         detached() {
@@ -163,8 +152,8 @@ namespace Auby.WebComponents {
                         activeElement.classList.remove("move");
                         nextElement.classList.remove("next");
                         nextElement.classList.remove("move");
-                        nextElement.classList.add("active");                        
-
+                        nextElement.classList.add("active");
+                       
 
                         if (this.previewIndex + 1 != this.images.length) {
                             this._setPreviews(this.previewIndex + 1);
@@ -214,8 +203,6 @@ namespace Auby.WebComponents {
         }
 
         private _onPreviewForwardTap(e: TapEvent) {
-
-
             if (this.previewIndex < this.images.length) {
                 this._setPreviews(this.previewIndex + 1);
             }
@@ -230,8 +217,6 @@ namespace Auby.WebComponents {
         }
 
         private _onPreviewBackTap(e: TapEvent) {
-
-
             if (this.previewIndex > 0) {
                 this._setPreviews(this.previewIndex - 1);
             }
@@ -260,13 +245,10 @@ namespace Auby.WebComponents {
             }
         }
 
-        private _setPreviewActive() {
-            
-
+        private _setPreviewActive() {            
             if (this.$$(".preview.active")) {
                 this.$$(".preview.active").classList.remove("active");
             }
-
             for (var i = 0; i <= this.previewAmount; i++) {
                 const test = <HTMLImageElement>this.$$(".item.active")
                 const activeElement = test.src;
@@ -298,12 +280,11 @@ namespace Auby.WebComponents {
                 if (this.images[i] === tapSrc) {
                      index = i;
                 }
-            }
-                        
+            }                        
             this._clearInterval();
-            this._setPreviews(index);
-            this._move(index);
-           
+            
+            this._move(index);   
+            this._setPreviews(index - 1);
         }
 
         private _onItemsTrack(e: any) {

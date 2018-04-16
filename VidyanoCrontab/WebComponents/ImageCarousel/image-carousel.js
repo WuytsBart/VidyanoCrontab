@@ -200,8 +200,8 @@ var Auby;
                     }
                 }
                 this._clearInterval();
-                this._setPreviews(index);
                 this._move(index);
+                this._setPreviews(index - 1);
             };
             ImageCarousel.prototype._onItemsTrack = function (e) {
                 if (this.inTransition === true)
