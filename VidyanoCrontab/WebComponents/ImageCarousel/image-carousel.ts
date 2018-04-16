@@ -26,8 +26,7 @@ namespace Auby.WebComponents {
             imageOpen: Boolean,
             autoRun: {
                 type: Boolean
-            }
-            ,
+            },
             previews: Array,
             previewIndex: {
                 type: Number,
@@ -281,8 +280,7 @@ namespace Auby.WebComponents {
                      index = i;
                 }
             }                        
-            this._clearInterval();
-            
+            this._clearInterval();            
             this._move(index);   
             this._setPreviews(index - 1);
         }

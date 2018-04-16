@@ -14,5 +14,9 @@
   {
     "outputFile": "WebComponents/Carousel/carousel.css",
     "inputFile": "WebComponents/Carousel/carousel.scss"
+  },
+  {
+    "outputFile": "WebComponents/ColorPicker/color-picker.css",
+    "inputFile": "WebComponents/ColorPicker/color-picker.scss"
   }
 ]

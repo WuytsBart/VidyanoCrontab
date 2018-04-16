@@ -1,0 +1,15 @@
+﻿<dom-module id="vc-color-picker">
+    <template>
+        <link rel="stylesheet" href="color-picker.css" />
+        
+        <vi-popup class="chosenColor">
+            <div header selected$="[[selectedColor]]" class="chosenColor"></div>
+            <div content class="colorContent">
+                <template is="dom-repeat" items="[[colors]]">
+                    <div class$="color [[item]]" on-tap="_setColor"></div>
+                </template>
+            </div>
+        </vi-popup>
+    </template>
+</dom-module>
+<script src="color-picker.js"></script>

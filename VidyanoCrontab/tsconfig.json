@@ -16,6 +16,7 @@
     "WebComponents/GoogleAddress/google-address.ts",
     "WebComponents/ImageCarousel/image-carousel.ts",
     "WebComponents/carousel/carousel.ts",
-    "WebComponents/Carousel/carousel.ts"
+    "WebComponents/Carousel/carousel.ts",
+    "WebComponents/ColorPicker/color-picker.ts"
   ]
 }

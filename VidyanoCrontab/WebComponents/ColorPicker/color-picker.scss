@@ -1,0 +1,198 @@
+:host {
+
+    .chosenColor {
+        height: 25px;
+        width: 25px;
+    }
+
+    .color {
+        height: 25px;
+        width: 25px;
+        margin: 1%;
+
+        &.active {
+            border: 2px solid black;
+        }
+    }
+
+ 
+
+    .colorContent {
+        height: 100px;
+        width: 210px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+    }
+
+    .theme-color {
+        background-color: var(--theme-color);
+    }
+
+    .theme-color-light {
+        background-color: var(--theme-color-light);
+    }
+
+    .theme-color-lighter {
+        background-color: var(--theme-color-lighter);
+    }
+
+    .theme-color-dark {
+        background-color: var(--theme-color-dark);
+    }
+
+    .theme-color-darker {
+        background-color: var(--theme-color-darker);
+    }
+
+    .theme-color-faint {
+        background-color: var(--theme-color-faint);
+    }
+
+    .theme-color-semi-faint {
+        background-color: var(--theme-color-semi-faint);
+    }
+
+    .theme-accent-color {
+        background-color: var(--theme-accent-color);
+    }
+
+    .theme-accent-color-light {
+        background-color: var(--theme-accent-color-light);
+    }
+
+    .theme-accent-color-lighter {
+        background-color: var(--theme-accent-color-lighter);
+    }
+
+    .theme-accent-color-dark {
+        background-color: var(--theme-accent-color-dark);
+    }
+
+    .theme-accent-color-darker {
+        background-color: var(--theme-accent-color-darker);
+    }
+
+    .theme-accent-color-faint {
+        background-color: var(--theme-accent-color-faint);
+    }
+
+    .theme-accent-color-semi-faint {
+        background-color: var(--theme-accent-color-semi-faint);
+    }
+
+    .theme-color-error {
+        background-color: var(--theme-color-error);
+    }
+
+    .theme-color-warning {
+        background-color: var(--theme-color-warning);
+    }
+
+    .theme-color-notice {
+        background-color: var(--theme-color-notice);
+    }
+
+    .theme-color-ok {
+        background-color: var(--theme-color-ok);
+    }
+
+    .theme-foreground {
+        background-color: var(--theme-foreground);
+    }
+
+    .theme-light-border {
+        background-color: var(--theme-light-border);
+    }
+
+    .theme-dark-border {
+        background-color: var(--theme-dark-border);
+    }
+
+
+    div[header][selected="theme-color"] {
+        background-color: var(--theme-color);
+    }
+
+    div[header][selected="theme-color-light"] {
+        background-color: var(--theme-color-light);
+    }
+
+    div[header][selected="theme-color-lighter"] {
+        background-color: var(--theme-color-lighter);
+    }
+
+    div[header][selected="theme-color-dark"] {
+        background-color: var(--theme-color-dark);
+    }
+
+    div[header][selected="theme-color-darker"] {
+        background-color: var(--theme-color-darker);
+    }
+
+    div[header][selected="theme-color-faint"] {
+        background-color: var(--theme-color-faint);
+    }
+
+    div[header][selected="theme-color-semi-faint"] {
+        background-color: var(--theme-color-semi-faint);
+    }
+
+    div[header][selected="theme-accent-color"] {
+        background-color: var(--theme-accent-color);
+    }
+
+    div[header][selected="theme-accent-color-light"] {
+        background-color: var(--theme-accent-color-light);
+    }
+
+    div[header][selected="theme-accent-color-lighter"] {
+        background-color: var(--theme-accent-color-lighter);
+    }
+
+    div[header][selected="theme-accent-color-dark"] {
+        background-color: var(--theme-accent-color-dark);
+    }
+
+    div[header][selected="theme-accent-color-darker"] {
+        background-color: var(--theme-accent-color-darker);
+    }
+
+    div[header][selected="theme-accent-color-faint"] {
+        background-color: var(--theme-accent-color-faint);
+    }
+
+    div[header][selected="theme-accent-color-semi-faint"] {
+        background-color: var(--theme-accent-color-semi-faint);
+    }
+
+    div[header][selected="theme-color-error"] {
+        background-color: var(--theme-color-error);
+    }
+
+    div[header][selected="theme-color-warning"] {
+        background-color: var(--theme-color-warning);
+    }
+
+    div[header][selected="theme-color-notice"] {
+        background-color: var(--theme-color-notice);
+    }
+
+    div[header][selected="theme-color-ok"] {
+        background-color: var(--theme-color-ok);
+    }
+
+    div[header][selected="theme-foreground"] {
+        background-color: var(--theme-foreground);
+    }
+
+    div[header][selected="theme-light-border"] {
+        background-color: var(--theme-light-border);
+    }
+
+    div[header][selected="theme-dark-border"] {
+        background-color: var(--theme-dark-border);
+    }
+}

@@ -1,0 +1,146 @@
+﻿:host .chosenColor {
+  height: 25px;
+  width: 25px; }
+
+:host .color {
+  height: 25px;
+  width: 25px;
+  margin: 1%; }
+  :host .color.active {
+    border: 2px solid black; }
+
+:host .colorContent {
+  height: 100px;
+  width: 210px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center; }
+
+:host .theme-color {
+  background-color: var(--theme-color); }
+
+:host .theme-color-light {
+  background-color: var(--theme-color-light); }
+
+:host .theme-color-lighter {
+  background-color: var(--theme-color-lighter); }
+
+:host .theme-color-dark {
+  background-color: var(--theme-color-dark); }
+
+:host .theme-color-darker {
+  background-color: var(--theme-color-darker); }
+
+:host .theme-color-faint {
+  background-color: var(--theme-color-faint); }
+
+:host .theme-color-semi-faint {
+  background-color: var(--theme-color-semi-faint); }
+
+:host .theme-accent-color {
+  background-color: var(--theme-accent-color); }
+
+:host .theme-accent-color-light {
+  background-color: var(--theme-accent-color-light); }
+
+:host .theme-accent-color-lighter {
+  background-color: var(--theme-accent-color-lighter); }
+
+:host .theme-accent-color-dark {
+  background-color: var(--theme-accent-color-dark); }
+
+:host .theme-accent-color-darker {
+  background-color: var(--theme-accent-color-darker); }
+
+:host .theme-accent-color-faint {
+  background-color: var(--theme-accent-color-faint); }
+
+:host .theme-accent-color-semi-faint {
+  background-color: var(--theme-accent-color-semi-faint); }
+
+:host .theme-color-error {
+  background-color: var(--theme-color-error); }
+
+:host .theme-color-warning {
+  background-color: var(--theme-color-warning); }
+
+:host .theme-color-notice {
+  background-color: var(--theme-color-notice); }
+
+:host .theme-color-ok {
+  background-color: var(--theme-color-ok); }
+
+:host .theme-foreground {
+  background-color: var(--theme-foreground); }
+
+:host .theme-light-border {
+  background-color: var(--theme-light-border); }
+
+:host .theme-dark-border {
+  background-color: var(--theme-dark-border); }
+
+:host div[header][selected="theme-color"] {
+  background-color: var(--theme-color); }
+
+:host div[header][selected="theme-color-light"] {
+  background-color: var(--theme-color-light); }
+
+:host div[header][selected="theme-color-lighter"] {
+  background-color: var(--theme-color-lighter); }
+
+:host div[header][selected="theme-color-dark"] {
+  background-color: var(--theme-color-dark); }
+
+:host div[header][selected="theme-color-darker"] {
+  background-color: var(--theme-color-darker); }
+
+:host div[header][selected="theme-color-faint"] {
+  background-color: var(--theme-color-faint); }
+
+:host div[header][selected="theme-color-semi-faint"] {
+  background-color: var(--theme-color-semi-faint); }
+
+:host div[header][selected="theme-accent-color"] {
+  background-color: var(--theme-accent-color); }
+
+:host div[header][selected="theme-accent-color-light"] {
+  background-color: var(--theme-accent-color-light); }
+
+:host div[header][selected="theme-accent-color-lighter"] {
+  background-color: var(--theme-accent-color-lighter); }
+
+:host div[header][selected="theme-accent-color-dark"] {
+  background-color: var(--theme-accent-color-dark); }
+
+:host div[header][selected="theme-accent-color-darker"] {
+  background-color: var(--theme-accent-color-darker); }
+
+:host div[header][selected="theme-accent-color-faint"] {
+  background-color: var(--theme-accent-color-faint); }
+
+:host div[header][selected="theme-accent-color-semi-faint"] {
+  background-color: var(--theme-accent-color-semi-faint); }
+
+:host div[header][selected="theme-color-error"] {
+  background-color: var(--theme-color-error); }
+
+:host div[header][selected="theme-color-warning"] {
+  background-color: var(--theme-color-warning); }
+
+:host div[header][selected="theme-color-notice"] {
+  background-color: var(--theme-color-notice); }
+
+:host div[header][selected="theme-color-ok"] {
+  background-color: var(--theme-color-ok); }
+
+:host div[header][selected="theme-foreground"] {
+  background-color: var(--theme-foreground); }
+
+:host div[header][selected="theme-light-border"] {
+  background-color: var(--theme-light-border); }
+
+:host div[header][selected="theme-dark-border"] {
+  background-color: var(--theme-dark-border); }
+
