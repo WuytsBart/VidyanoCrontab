@@ -1,13 +1,25 @@
-﻿:host .chosenColor {
+﻿@charset "UTF-8";
+:host .chosenColor {
   height: 25px;
   width: 25px; }
 
 :host .color {
   height: 25px;
   width: 25px;
-  margin: 1%; }
+  margin: 2px;
+  box-sizing: border-box; }
   :host .color.active {
     border: 2px solid black; }
+    :host .color.active:after {
+      position: relative;
+      left: 7px;
+      top: 0;
+      right: 0;
+      bottom: 7px;
+      line-height: 24px;
+      content: "✓";
+      text-align: center;
+      font-weight: bold; }
 
 :host .colorContent {
   height: 100px;

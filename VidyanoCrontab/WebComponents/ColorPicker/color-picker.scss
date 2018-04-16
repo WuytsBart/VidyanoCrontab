@@ -1,4 +1,4 @@
-:host {
+﻿:host {
 
     .chosenColor {
         height: 25px;
@@ -8,14 +8,25 @@
     .color {
         height: 25px;
         width: 25px;
-        margin: 1%;
+        margin: 2px;
+        box-sizing: border-box;
 
         &.active {
             border: 2px solid black;
+
+            &:after {
+                position: relative;
+                left: 7px;
+                top: 0;
+                right: 0;
+                bottom: 7px;
+                line-height: 24px;
+                content: "✓";
+                text-align: center;
+                font-weight: bold;
+            }
         }
     }
-
- 
 
     .colorContent {
         height: 100px;
