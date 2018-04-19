@@ -17,6 +17,7 @@
     "WebComponents/ImageCarousel/image-carousel.ts",
     "WebComponents/carousel/carousel.ts",
     "WebComponents/Carousel/carousel.ts",
-    "WebComponents/ColorPicker/color-picker.ts"
+    "WebComponents/ColorPicker/color-picker.ts",
+    "WebComponents/Calendar/calendar.ts"
   ]
 }

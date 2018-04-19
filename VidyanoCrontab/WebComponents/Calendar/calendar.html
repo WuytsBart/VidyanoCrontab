@@ -1,0 +1,21 @@
+﻿<dom-module id="vc-calendar">
+    <template>
+        <link rel="stylesheet" href="calendar.css" />
+        <div class="week">
+            <template is="dom-repeat" items="[[weekArray]]">
+                <div class="day">[[item]]</div>
+            </template>
+        </div>
+        <template is="dom-repeat" items="[[monthArray]]" as="week">              
+            <div class="week">
+                <template is="dom-repeat" items="[[week]]" as="day">
+                    <div class="day">[[day]]</div>
+                </template>
+            </div>
+        </template>
+
+
+        <button on-tap="_onNextMonthTap">volgende maand</button>
+    </template>
+</dom-module>
+<script src="calendar.js"></script>

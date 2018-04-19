@@ -18,5 +18,9 @@
   {
     "outputFile": "WebComponents/ColorPicker/color-picker.css",
     "inputFile": "WebComponents/ColorPicker/color-picker.scss"
+  },
+  {
+    "outputFile": "WebComponents/Calendar/calendar.css",
+    "inputFile": "WebComponents/Calendar/calendar.scss"
   }
 ]

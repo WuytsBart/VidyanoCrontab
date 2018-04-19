@@ -1,0 +1,8 @@
+﻿:host .week {
+  display: flex;
+  flex-direction: row; }
+
+:host .day {
+  height: 50px;
+  width: 100px; }
+
