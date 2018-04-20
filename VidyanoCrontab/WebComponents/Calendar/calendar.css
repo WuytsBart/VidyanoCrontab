@@ -6,3 +6,9 @@
   height: 50px;
   width: 100px; }
 
+:host .event {
+  background-color: red;
+  margin: 1%; }
+  :host .event.doorlopend {
+    margin-right: 0%; }
+

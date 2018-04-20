@@ -42,7 +42,10 @@ var VidyanoCrontab;
                     var tempArray = [];
                     var tempI = 0;
                     for (var x = 0; x < 7; x++) {
-                        tempArray.push(indexDate.clone().add(1, "days").date());
+                        tempArray.push({
+                            date: indexDate.clone().add(1, "days").date(),
+                            events: [this._getEvents(x)]
+                        });
                         indexDate = indexDate.add(1, "days");
                         if (indexDate.date() >= indexDate.daysInMonth() && i > 2) {
                             i = 6;

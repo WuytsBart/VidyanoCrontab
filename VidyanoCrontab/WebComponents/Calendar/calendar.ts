@@ -17,7 +17,8 @@ namespace VidyanoCrontab.WebComponents {
     }, "vc")
     export class Calendar extends Vidyano.WebComponents.WebComponent {
         currentDate;
-        monthArray: [number[]];
+        monthArray: [IWeekDay[]];
+        tempWeekArray: IWeekDay[]; private _setTempWeekArray: (value: IWeekDay[]) => void;
         weekArray: string[];  
         firstOfMonth;
         lastofMonth;
@@ -25,9 +26,7 @@ namespace VidyanoCrontab.WebComponents {
         monthOffset: number;
         currentMonth: string;
         currentYear: number;
-       
-        
-
+               
         async attached() {
             await this.app.importLib("moment");
             super.attached();
@@ -39,13 +38,10 @@ namespace VidyanoCrontab.WebComponents {
             this._setCalendar();            
         }
 
-        
-
         private _calcInit(start) {         
             this.firstOfMonth = start.startOf("month");
             this.lastofMonth = start.daysInMonth();            
         }
-
 
         private _setCalendar() {
             var tempMonthArray = [];
@@ -58,7 +54,11 @@ namespace VidyanoCrontab.WebComponents {
                 var tempArray = [];
                 var tempI = 0;
                 for (var x = 0; x < 7; x++) {
-                    tempArray.push(indexDate.clone().add(1,"days").date());
+
+                    tempArray.push({
+                        date: indexDate.clone().add(1, "days").date(),
+                        events: [this._getEvents(x)]
+                    })
                     indexDate = indexDate.add(1, "days");
                     if (indexDate.date() >= indexDate.daysInMonth() && i > 2 ) {                        
                         i = 6;
@@ -70,7 +70,6 @@ namespace VidyanoCrontab.WebComponents {
             }
             this.set("monthArray", tempMonthArray);
         }
-
 
         private _onNextMonthTap() {
             this.monthOffset++;
@@ -89,5 +88,13 @@ namespace VidyanoCrontab.WebComponents {
             this.currentMonth = tempMoment.format('MMMM');
             this.currentYear = tempMoment.year();
         }
+
+
+        
+    }
+
+    export interface IWeekDay {
+        date: string;
+        events: string[];
     }
 }

@@ -1,1 +1,1 @@
-﻿:host .week{display:flex;flex-direction:row;}:host .day{height:50px;width:100px;}
+﻿:host .week{display:flex;flex-direction:row;}:host .day{height:50px;width:100px;}:host .event{background-color:#f00;margin:1%;}:host .event.doorlopend{margin-right:0%;}

@@ -9,6 +9,13 @@
         width: 100px;
     }
     
-
+    .event {
+        background-color: red;
+        margin: 1%;
+        
+        &.doorlopend {
+            margin-right: 0%
+        }
+    }
     
 }

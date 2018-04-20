@@ -10,7 +10,13 @@
         <template is="dom-repeat" items="[[monthArray]]" as="week">              
             <div class="week">
                 <template is="dom-repeat" items="[[week]]" as="day">
-                    <div class="day">[[day]]</div>
+                    <div class="day" on-tap="_setEvent">
+                        <div>[[day.date]]</div>
+                        <template is="dom-repeat" items="[[day.events]]" as="event">
+                            <div class="event">[[event]]</div>
+                        </template>
+                        
+                    </div>
                 </template>
             </div>
         </template>
