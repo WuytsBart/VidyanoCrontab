@@ -4,7 +4,6 @@ namespace VidyanoCrontab.WebComponents {
     @Vidyano.WebComponents.WebComponent.register({
         properties: {
             currentMonth: Number,
-            currentDay: Number,
             currentYear: Number,
             monthArray: Array,
             monthOffset: {
@@ -24,63 +23,71 @@ namespace VidyanoCrontab.WebComponents {
         lastofMonth;
         lastDayOfMonth;
         monthOffset: number;
+        currentMonth: string;
+        currentYear: number;
+       
         
 
         async attached() {
             await this.app.importLib("moment");
             super.attached();
-            this.weekArray = ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"];
+            this.weekArray = ["maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag", "zondag"];
             this.currentDate = moment().utc();
-            this.currentDate = moment(this.currentDate);
+            this.currentMonth = this.currentDate.format('MMMM');
+            this.currentYear = this.currentDate.year();
             this._calcInit(this.currentDate);
-            
-            this._setCalendar();
-            
+            this._setCalendar();            
         }
 
+        
 
-
-        private _calcInit(start) {
-         
+        private _calcInit(start) {         
             this.firstOfMonth = start.startOf("month");
-            this.lastofMonth = start.daysInMonth();
-            
+            this.lastofMonth = start.daysInMonth();            
         }
 
 
         private _setCalendar() {
-            var indexDate = this.firstOfMonth;
+            var tempMonthArray = [];
+            var indexDate = this.firstOfMonth.clone();
+            indexDate.subtract(5, "days");
             if (indexDate.day != 0) {
                 indexDate.subtract(indexDate.day(), "days")
-            }
-
-            var tempMonthArray = [];
+            }            
             for (var i = 0; i < 6; i++) {
                 var tempArray = [];
-                var tempI;
+                var tempI = 0;
                 for (var x = 0; x < 7; x++) {
-
-                    tempArray.push(indexDate.date());
+                    tempArray.push(indexDate.clone().add(1,"days").date());
                     indexDate = indexDate.add(1, "days");
-                    if (indexDate.date() == this.lastofMonth && indexDate.month() == this.firstOfMonth.month()) {
-                        tempI = 6;
+                    if (indexDate.date() >= indexDate.daysInMonth() && i > 2 ) {                        
+                        i = 6;
                     }
-                }
-                if (tempI == 6) {
-                    i = 6;
-                }
-                tempMonthArray.push(tempArray);
-                
+                }                
+                if (!(i == 0 && tempArray[6] > 7)) {
+                    tempMonthArray.push(tempArray);
+                }                 
             }
             this.set("monthArray", tempMonthArray);
         }
 
 
         private _onNextMonthTap() {
-            
-            
-           
-           
+            this.monthOffset++;
+            var tempMoment = moment(this.currentDate).clone().add(this.monthOffset, "months");
+            this._calcInit(tempMoment);
+            this._setCalendar();
+            this.currentMonth = tempMoment.format('MMMM');
+            this.currentYear = tempMoment.year();
+        }
+
+        private _onPreviousMonthTap() {
+            this.monthOffset--;
+            var tempMoment = moment(this.currentDate).clone().add(this.monthOffset, "months");
+            this._calcInit(moment(this.currentDate).clone().add(this.monthOffset, "months"));
+            this._setCalendar();
+            this.currentMonth = tempMoment.format('MMMM');
+            this.currentYear = tempMoment.year();
         }
     }
 }

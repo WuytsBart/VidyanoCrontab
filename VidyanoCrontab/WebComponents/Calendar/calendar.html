@@ -1,6 +1,7 @@
 ﻿<dom-module id="vc-calendar">
     <template>
         <link rel="stylesheet" href="calendar.css" />
+        <div>[[currentMonth]][[currentYear]]</div>
         <div class="week">
             <template is="dom-repeat" items="[[weekArray]]">
                 <div class="day">[[item]]</div>
@@ -16,6 +17,7 @@
 
 
         <button on-tap="_onNextMonthTap">volgende maand</button>
+        <button on-tap="_onPreviousMonthTap">Vorige maand</button>
     </template>
 </dom-module>
 <script src="calendar.js"></script>

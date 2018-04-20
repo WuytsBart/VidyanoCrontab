@@ -116,6 +116,10 @@
     <Content Include=".bowerrc">
       <DependentUpon>bower.json</DependentUpon>
     </Content>
+    <Content Include="WebComponents\Calendar\calendar.css" />
+    <Content Include="WebComponents\Calendar\calendar.html" />
+    <Content Include="WebComponents\Calendar\calendar.js" />
+    <Content Include="WebComponents\Calendar\calendar.min.css" />
     <Content Include="WebComponents\Carousel\carousel.css">
       <DependentUpon>carousel.scss</DependentUpon>
     </Content>
@@ -126,6 +130,10 @@
     <Content Include="WebComponents\Carousel\carousel.min.css">
       <DependentUpon>carousel.css</DependentUpon>
     </Content>
+    <Content Include="WebComponents\ColorPicker\color-picker.css" />
+    <Content Include="WebComponents\ColorPicker\color-picker.html" />
+    <Content Include="WebComponents\ColorPicker\color-picker.js" />
+    <Content Include="WebComponents\ColorPicker\color-picker.min.css" />
     <Content Include="WebComponents\Crontab\crontab.css">
       <DependentUpon>crontab.scss</DependentUpon>
     </Content>
@@ -176,6 +184,8 @@
     <Content Include="WebComponents\GoogleAddress\google-address.scss" />
     <Content Include="WebComponents\ImageCarousel\image-carousel.scss" />
     <Content Include="WebComponents\Carousel\carousel.scss" />
+    <Content Include="WebComponents\Calendar\calendar.scss" />
+    <Content Include="WebComponents\ColorPicker\color-picker.scss" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -184,7 +194,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="libs\iron-image\iron-image.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\vidyano\vidyano.d.ts" />
+    <TypeScriptCompile Include="WebComponents\Calendar\calendar.ts" />
     <TypeScriptCompile Include="WebComponents\Carousel\carousel.ts" />
+    <TypeScriptCompile Include="WebComponents\ColorPicker\color-picker.ts" />
     <TypeScriptCompile Include="WebComponents\Crontab\crontab.ts" />
     <TypeScriptCompile Include="WebComponents\GoogleAddress\google-address.ts" />
     <TypeScriptCompile Include="WebComponents\ImageCarousel\image-carousel.ts" />
